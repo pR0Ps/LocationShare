@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">LocationShare</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_shareLoc">Share Location</string>
+    <string name="label_getLoc">Getting Location</string>
+    <string name="send_to">Share location via</string>
+
+</resources>
