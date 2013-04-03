@@ -17,16 +17,6 @@ public class MyLocationListener implements LocationListener {
 	@Override
 	public void onLocationChanged(Location location) {
 		main.updateLocation(location);
-		return;
-		/*
-		float meters = location.getAccuracy();
-		double lat = location.getLatitude();
-		double lon = location.getLongitude();
-		
-		Log.e(null, "Long: " + lon);
-		Log.e(null, "Lat: " + lat);
-		Log.e(null, "Accuracy: " + meters);
-		*/
 	}
 
 	@Override
