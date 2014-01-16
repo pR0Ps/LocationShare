@@ -44,7 +44,9 @@ public class LocationShare extends Activity {
 		mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 	    mlocListener = new MyLocationListener(this);
 	    location = mlocManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-	    lastFix = location.getTime();
+	    if (location != null){
+	    	lastFix = location.getTime();
+	    }
 	    
 	    handler.post(updateUITask);
 	}
@@ -70,6 +72,9 @@ public class LocationShare extends Activity {
 	}
 	
 	public void shareLocation (View view){
+		if (this.location == null){
+			return;
+		}
 		
 		String link = formatLocation("http://maps.google.com/?q={0},{1}", this.location);
 		
@@ -81,6 +86,9 @@ public class LocationShare extends Activity {
 	}
 	
 	public void viewLocation (View view){
+		if (this.location == null){
+			return;
+		}
 		
 		String uri = formatLocation("geo:{0},{1}?q={0},{1}", this.location);
 		
@@ -96,13 +104,22 @@ public class LocationShare extends Activity {
 	}
 	
 	public void updateDisplay(){
+
+		if (this.location != null){ 
+			long timeElapsed = System.currentTimeMillis() - this.lastFix;
+			((TextView)findViewById(R.id.timeText)).setText(stringifyTime(timeElapsed/1000));
+
+			((TextView)findViewById(R.id.latitudeText)).setText("" + this.location.getLatitude());
+			((TextView)findViewById(R.id.longitudeText)).setText("" + this.location.getLongitude());
+			((TextView)findViewById(R.id.accuracyText)).setText(new DecimalFormat("###.00").format(this.location.getAccuracy()) + "m");
+		}
+		else{
+			((TextView)findViewById(R.id.latitudeText)).setText("N/A");
+			((TextView)findViewById(R.id.longitudeText)).setText("N/A");
+			((TextView)findViewById(R.id.accuracyText)).setText("N/A");
+			((TextView)findViewById(R.id.timeText)).setText("N/A");
+		}
 		
-		long timeElapsed = System.currentTimeMillis() - lastFix;
-		
-		((TextView)findViewById(R.id.latitudeText)).setText("" + this.location.getLatitude());
-		((TextView)findViewById(R.id.longitudeText)).setText("" + this.location.getLongitude());
-		((TextView)findViewById(R.id.accuracyText)).setText(new DecimalFormat("###.00").format(this.location.getAccuracy()) + "m");
-		((TextView)findViewById(R.id.timeText)).setText(stringifyTime(timeElapsed/1000));
 	}
 	
 	private String formatLocation(String s, Location l){
