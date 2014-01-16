@@ -118,6 +118,9 @@ public class LocationShare extends Activity {
 	    seconds -= hours * 3600;
 	    int minutes = (int)(seconds/60);
 	    seconds -= minutes * 60;
+
+	    //Fix negative values (rounding)
+	    seconds = Math.max(0, seconds);
 	    
 	    return MessageFormat.format("{0,number,00}:{1,number,00}:{2,number,00}", hours, minutes, seconds);
 	}
