@@ -191,7 +191,7 @@ public class MainActivity extends ActionBarActivity {
 
     private String formatLocation(String s, Location l){
         // Hack to get around MessageFormat precision weirdness
-        return MessageFormat.format(s, ""+l.getLatitude(), ""+l.getLongitude(), ""+l.hasAccuracy());
+        return MessageFormat.format(s, ""+l.getLatitude(), ""+l.getLongitude(), ""+l.getAccuracy());
     }
 
     public static String stringifyTime(long seconds) {
