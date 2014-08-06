@@ -26,6 +26,14 @@ public class MainActivity extends ActionBarActivity {
     long lastFix;
     boolean hasFix;
 
+    // TextViews
+    TextView tvLatitude;
+    TextView tvLongitude;
+    TextView tvAccuracy;
+    TextView tvTime;
+
+    final DecimalFormat accuracyFormat = new DecimalFormat("###.00");
+
     private Handler handler = new Handler();
     private Runnable updateUITask = new Runnable() {
         public void run() {
@@ -40,6 +48,12 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         final Context context = getApplicationContext();
+
+        // Setup TextViews
+        tvLatitude = (TextView)findViewById(R.id.latitudeText);
+        tvLongitude = (TextView)findViewById(R.id.longitudeText);
+        tvAccuracy = (TextView)findViewById(R.id.accuracyText);
+        tvTime = (TextView)findViewById(R.id.timeText);
 
         hasFix = false;
 
@@ -160,17 +174,17 @@ public class MainActivity extends ActionBarActivity {
 
         if (lastLocation != null){
             long timeElapsed = System.currentTimeMillis() - lastFix;
-            ((TextView)findViewById(R.id.timeText)).setText(stringifyTime(timeElapsed/1000));
+            tvTime.setText(stringifyTime(timeElapsed / 1000));
 
-            ((TextView)findViewById(R.id.latitudeText)).setText("" + lastLocation.getLatitude());
-            ((TextView)findViewById(R.id.longitudeText)).setText("" + lastLocation.getLongitude());
-            ((TextView)findViewById(R.id.accuracyText)).setText(new DecimalFormat("###.00").format(lastLocation.getAccuracy()) + "m");
+            tvLatitude.setText("" + lastLocation.getLatitude());
+            tvLongitude.setText("" + lastLocation.getLongitude());
+            tvAccuracy.setText(accuracyFormat.format(lastLocation.getAccuracy()) + "m");
         }
         else{
-            ((TextView)findViewById(R.id.latitudeText)).setText("N/A");
-            ((TextView)findViewById(R.id.longitudeText)).setText("N/A");
-            ((TextView)findViewById(R.id.accuracyText)).setText("N/A");
-            ((TextView)findViewById(R.id.timeText)).setText("N/A");
+            tvLatitude.setText("N/A");
+            tvLongitude.setText("N/A");
+            tvAccuracy.setText("N/A");
+            tvTime.setText("N/A");
         }
 
     }
