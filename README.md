@@ -12,7 +12,3 @@ Usage
 Launch the application, wait until the device homes in on your location, then hit the share button.
 
 LocationShare allows you to share your location via any application that supports sharing plaintext. This includes (but isn't limited to) sharing via SMS, email, social networks, note taking appliactions, etc.
-
-Licensing
-=========
-Licenced under the GNU GPL v3
