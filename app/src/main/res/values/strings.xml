@@ -12,7 +12,7 @@
     <string name="accuracy">Accuracy:</string>
     <string name="latitude">Latitude:</string>
     <string name="longitude">Longitude:</string>
-    <string name="fixtime">Fix age:</string>
+    <string name="fixTime">Fix age:</string>
     <string name="na">N/A</string>
 
 </resources>

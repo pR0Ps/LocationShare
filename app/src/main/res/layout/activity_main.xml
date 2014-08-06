@@ -157,7 +157,7 @@
                 android:layout_weight="0.5"
                 android:gravity="right"
                 android:paddingRight="5dp"
-                android:text="@string/fixtime"
+                android:text="@string/fixTime"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
