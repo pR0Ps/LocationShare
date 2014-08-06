@@ -102,13 +102,6 @@ public class MainActivity extends ActionBarActivity {
                 }
             };
 
-            // Register GPSStatus listener for events
-            mLocManager.addGpsStatusListener(gpsStatusListener);
-
-
-
-            mLocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0, 0, mLocListener);
-
             lastLocation = mLocManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (lastLocation != null){
                 lastFix = lastLocation.getTime();
@@ -129,6 +122,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onStop(){
         super.onStop();
         mLocManager.removeUpdates(mLocListener);
+        mLocManager.removeGpsStatusListener(gpsStatusListener);
     }
 
     @Override
@@ -136,6 +130,7 @@ public class MainActivity extends ActionBarActivity {
         super.onResume();
         mLocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mLocListener);
         mLocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, mLocListener);
+        mLocManager.addGpsStatusListener(gpsStatusListener);
     }
 
     public void shareLocation (View view){
