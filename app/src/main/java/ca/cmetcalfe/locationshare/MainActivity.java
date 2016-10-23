@@ -1,10 +1,9 @@
 package ca.cmetcalfe.locationshare;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
+
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -13,11 +12,12 @@ import android.location.LocationManager;
 import android.location.GpsStatus;
 import android.net.Uri;
 import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     LocationManager mLocManager;
     LocationListener mLocListener;
@@ -76,28 +76,28 @@ public class MainActivity extends ActionBarActivity {
             gpsStatusListener = new GpsStatus.Listener(){
                 public void onGpsStatusChanged(int event){
                     switch(event){
-                    case GpsStatus.GPS_EVENT_STARTED:
-                         System.out.println("GPS_EVENT_STARTED");
-                        break;
-                    case GpsStatus.GPS_EVENT_STOPPED:
-                        System.out.println("GPS_EVENT_STOPPED");
-                        break;
-                    case GpsStatus.GPS_EVENT_FIRST_FIX:
-                        System.out.println("GPS_EVENT_FIRST_FIX");
-                        hasFix = true;
-                        break;
-                    case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
-                        System.out.println("GPS_EVENT_SATELLITE_STATUS");
-                        if (lastLocation != null) {
-                            hasFix = (System.currentTimeMillis() - lastFix) < 2000;
-                        }
-
-                        if (hasFix) {
-                            System.out.println("HAS FIX");
+                        case GpsStatus.GPS_EVENT_STARTED:
+                            System.out.println("GPS_EVENT_STARTED");
+                            break;
+                        case GpsStatus.GPS_EVENT_STOPPED:
+                            System.out.println("GPS_EVENT_STOPPED");
+                            break;
+                        case GpsStatus.GPS_EVENT_FIRST_FIX:
+                            System.out.println("GPS_EVENT_FIRST_FIX");
+                            hasFix = true;
+                            break;
+                        case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
+                            System.out.println("GPS_EVENT_SATELLITE_STATUS");
+                            if (lastLocation != null) {
+                                hasFix = (System.currentTimeMillis() - lastFix) < 2000;
                             }
-                        else {
-                            System.out.println("NO FIX");
-                        }
+
+                            if (hasFix) {
+                                System.out.println("HAS FIX");
+                            }
+                            else {
+                                System.out.println("NO FIX");
+                            }
                     }
                 }
             };
@@ -109,13 +109,6 @@ public class MainActivity extends ActionBarActivity {
 
             handler.post(updateUITask);
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
     }
 
     @Override
