@@ -1,17 +1,16 @@
 <resources>
-
     <string name="app_name">LocationShare</string>
-    <string name="action_settings">Settings</string>
-    <string name="action_shareLoc">Share Location</string>
-    <string name="action_viewLoc">View Location</string>
-    <string name="label_getLoc">Getting Location</string>
-    <string name="send_via">Share location via</string>
-    <string name="view_via">View location via</string>
 
-    <string name="accuracy">Accuracy:</string>
-    <string name="latitude">Latitude:</string>
-    <string name="longitude">Longitude:</string>
-    <string name="fixTime">Fix age:</string>
-    <string name="na">N/A</string>
+    <string name="share_location">Share</string>
+    <string name="copy_location">Copy</string>
+    <string name="view_location">View</string>
+    <string name="copied">Copied to clipboard</string>
+    <string name="getting_location">Getting location…</string>
+    <string name="share_location_via">Share location via</string>
+    <string name="view_location_via">View location via</string>
+    <string name="turn_on_GPS">Turn on GPS</string>
 
+    <string name="accuracy">Accuracy</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
 </resources>
