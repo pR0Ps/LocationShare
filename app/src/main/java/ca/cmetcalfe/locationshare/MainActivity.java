@@ -1,7 +1,9 @@
 package ca.cmetcalfe.locationshare;
 
+import android.Manifest;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import java.text.MessageFormat;
@@ -15,6 +17,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.SystemClock;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +26,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+
+    private final static int PERMISSION_REQUEST = 1;
 
     private Button gpsButton;
     private TextView progressTitle;
@@ -72,15 +77,31 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop(){
         super.onStop();
-        locManager.removeUpdates(locListener);
+        try {
+            locManager.removeUpdates(locListener);
+        }
+        catch (SecurityException ignored){
+        }
     }
 
     @Override
     protected void onResume(){
         super.onResume();
+        startRequestingLocation();
         updateLocation();
-        if (locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListener);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST &&
+                grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            startRequestingLocation();
+        }
+        else{
+            Toast.makeText(getApplicationContext(), R.string.permission_denied, Toast.LENGTH_SHORT).show();
+            finish();
         }
     }
 
@@ -173,6 +194,21 @@ public class MainActivity extends AppCompatActivity {
     // ----------------------------------------------------
     // Helper functions
     // ----------------------------------------------------
+    private void startRequestingLocation(){
+        if (!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            return;
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST);
+            return;
+        }
+
+        // GPS enabled and have permission - start requesting location updates
+        locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListener);
+    }
+
     private boolean validLocation(Location location){
         if (location == null){
             return false;

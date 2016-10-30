@@ -8,7 +8,9 @@
     <string name="getting_location">Getting location…</string>
     <string name="share_location_via">Share location via</string>
     <string name="view_location_via">View location via</string>
+
     <string name="turn_on_GPS">Turn on GPS</string>
+    <string name="permission_denied">GPS permission denied</string>
 
     <string name="accuracy">Accuracy</string>
     <string name="latitude">Latitude</string>
