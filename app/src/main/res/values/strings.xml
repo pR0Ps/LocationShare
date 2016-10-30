@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LocationShare</string>
+    <string name="app_name">Location Share</string>
 
     <string name="share_location">Share</string>
     <string name="copy_location">Copy</string>
