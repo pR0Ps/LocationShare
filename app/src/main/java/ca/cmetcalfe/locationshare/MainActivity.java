@@ -29,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private TextView detailsText;
 
+    private Button shareButton;
+    private Button copyButton;
+    private Button viewButton;
+
     private LocationManager locManager;
     private Location lastLocation;
 
@@ -57,6 +61,11 @@ public class MainActivity extends AppCompatActivity {
         progressTitle = (TextView)findViewById(R.id.progressTitle);
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
         detailsText = (TextView)findViewById(R.id.detailsText);
+
+        shareButton = (Button)findViewById(R.id.shareButton);
+        copyButton = (Button)findViewById(R.id.copyButton);
+        viewButton = (Button)findViewById(R.id.viewButton);
+
         locManager = (LocationManager)getSystemService(LOCATION_SERVICE);
     }
 
@@ -92,6 +101,10 @@ public class MainActivity extends AppCompatActivity {
         progressTitle.setVisibility(waitingForLocation ? View.VISIBLE : View.GONE);
         progressBar.setVisibility(waitingForLocation ? View.VISIBLE : View.GONE);
         detailsText.setVisibility(haveLocation ? View.VISIBLE : View.GONE);
+
+        shareButton.setEnabled(haveLocation);
+        copyButton.setEnabled(haveLocation);
+        viewButton.setEnabled(haveLocation);
 
         if (haveLocation){
             String newline = System.getProperty("line.separator");
