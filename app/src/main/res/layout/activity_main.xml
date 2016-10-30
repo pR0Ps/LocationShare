@@ -44,7 +44,7 @@
             android:visibility="gone"
             android:layout_width="fill_parent"
             android:layout_height="54dp"
-            android:onClick="enableGps"
+            android:onClick="openLocationSettings"
             android:text="@string/turn_on_GPS" />
 
     </LinearLayout>

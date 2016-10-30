@@ -6,6 +6,7 @@ import android.content.ClipboardManager;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+
 import java.text.MessageFormat;
 import java.util.Locale;
 
@@ -25,6 +26,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 public class MainActivity extends AppCompatActivity {
 
     private final static int PERMISSION_REQUEST = 1;
@@ -41,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
     private LocationManager locManager;
     private Location lastLocation;
 
-    private LocationListener locListener = new LocationListener(){
-        public void onLocationChanged(Location loc){
+    private LocationListener locListener = new LocationListener() {
+        public void onLocationChanged(Location loc) {
             updateLocation(loc);
         }
         public void onProviderEnabled(String provider) {
@@ -51,7 +53,8 @@ public class MainActivity extends AppCompatActivity {
         public void onProviderDisabled(String provider) {
             updateLocation();
         }
-        public void onStatusChanged(String provider, int status, Bundle extras) {}
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+        }
     };
 
     // ----------------------------------------------------
@@ -62,11 +65,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Display area
         gpsButton = (Button)findViewById(R.id.gpsButton);
         progressTitle = (TextView)findViewById(R.id.progressTitle);
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
         detailsText = (TextView)findViewById(R.id.detailsText);
 
+        // Button area
         shareButton = (Button)findViewById(R.id.shareButton);
         copyButton = (Button)findViewById(R.id.copyButton);
         viewButton = (Button)findViewById(R.id.viewButton);
@@ -75,17 +80,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop(){
+    protected void onStop() {
         super.onStop();
         try {
             locManager.removeUpdates(locListener);
-        }
-        catch (SecurityException ignored){
+        } catch (SecurityException ignored) {
         }
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         startRequestingLocation();
         updateLocation();
@@ -96,10 +100,9 @@ public class MainActivity extends AppCompatActivity {
                                            @NonNull String permissions[],
                                            @NonNull int[] grantResults) {
         if (requestCode == PERMISSION_REQUEST &&
-                grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             startRequestingLocation();
-        }
-        else{
+        } else {
             Toast.makeText(getApplicationContext(), R.string.permission_denied, Toast.LENGTH_SHORT).show();
             finish();
         }
@@ -108,31 +111,32 @@ public class MainActivity extends AppCompatActivity {
     // ----------------------------------------------------
     // UI
     // ----------------------------------------------------
-    private void updateLocation(){
+    private void updateLocation() {
         // Trigger a UI update without changing the location
         updateLocation(lastLocation);
     }
 
-    private void updateLocation(Location location){
+    private void updateLocation(Location location) {
         boolean locationEnabled = locManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         boolean waitingForLocation = locationEnabled && !validLocation(location);
         boolean haveLocation = locationEnabled && !waitingForLocation;
 
+        // Update display area
         gpsButton.setVisibility(locationEnabled ? View.GONE : View.VISIBLE);
         progressTitle.setVisibility(waitingForLocation ? View.VISIBLE : View.GONE);
         progressBar.setVisibility(waitingForLocation ? View.VISIBLE : View.GONE);
         detailsText.setVisibility(haveLocation ? View.VISIBLE : View.GONE);
 
+        // Update buttons
         shareButton.setEnabled(haveLocation);
         copyButton.setEnabled(haveLocation);
         viewButton.setEnabled(haveLocation);
 
-        if (haveLocation){
+        if (haveLocation) {
             String newline = System.getProperty("line.separator");
-            detailsText.setText(
-                    getString(R.string.accuracy) + ": " + getAccuracy(location) + newline +
-                            getString(R.string.latitude) + ": " + getLongitude(location) + newline +
-                            getString(R.string.longitude) + ": " + getLatitude(location));
+            detailsText.setText(getString(R.string.accuracy) + ": " + getAccuracy(location) + newline +
+                    getString(R.string.latitude) + ": " + getLongitude(location) + newline +
+                    getString(R.string.longitude) + ": " + getLatitude(location));
 
             lastLocation = location;
         }
@@ -141,8 +145,8 @@ public class MainActivity extends AppCompatActivity {
     // ----------------------------------------------------
     // Actions
     // ----------------------------------------------------
-    public void shareLocation (View view){
-        if (!validLocation(lastLocation)){
+    public void shareLocation(View view) {
+        if (!validLocation(lastLocation)) {
             return;
         }
 
@@ -155,15 +159,15 @@ public class MainActivity extends AppCompatActivity {
         startActivity(Intent.createChooser(intent, getString(R.string.share_location_via)));
     }
 
-    public void copyLocation(View view){
-        if (!validLocation(lastLocation)){
+    public void copyLocation(View view) {
+        if (!validLocation(lastLocation)) {
             return;
         }
 
         String text = getLocationLink(lastLocation);
 
         Object clipService = getSystemService(Context.CLIPBOARD_SERVICE);
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB){
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
             @SuppressWarnings("deprecation")
             android.text.ClipboardManager clipboard = (android.text.ClipboardManager)clipService;
             clipboard.setText(text);
@@ -176,8 +180,8 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), R.string.copied, Toast.LENGTH_SHORT).show();
     }
 
-    public void viewLocation (View view){
-        if (!validLocation(lastLocation)){
+    public void viewLocation(View view) {
+        if (!validLocation(lastLocation)) {
             return;
         }
 
@@ -187,20 +191,22 @@ public class MainActivity extends AppCompatActivity {
         startActivity(Intent.createChooser(intent, getString(R.string.view_location_via)));
     }
 
-    public void enableGps(View view){
-        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+    public void openLocationSettings(View view) {
+        if (!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+        }
     }
 
     // ----------------------------------------------------
     // Helper functions
     // ----------------------------------------------------
-    private void startRequestingLocation(){
-        if (!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+    private void startRequestingLocation() {
+        if (!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             return;
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+                checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST);
             return;
         }
@@ -209,32 +215,31 @@ public class MainActivity extends AppCompatActivity {
         locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListener);
     }
 
-    private boolean validLocation(Location location){
-        if (location == null){
+    private boolean validLocation(Location location) {
+        if (location == null) {
             return false;
         }
 
         // Location must be from less than 30 seconds ago to be considered valid
-        if (Build.VERSION.SDK_INT < 17){
+        if (Build.VERSION.SDK_INT < 17) {
             return System.currentTimeMillis() - location.getTime() < 30e3;
-        }
-        else{
+        } else {
             return SystemClock.elapsedRealtime() - location.getElapsedRealtimeNanos() < 30e9;
         }
 
     }
 
-    private String getLocationLink(Location location){
+    private String getLocationLink(Location location) {
         return MessageFormat.format("https://maps.google.com/?q={0},{1}",
                 getLatitude(location), getLongitude(location));
     }
 
-    private String getLocationURI(Location location){
+    private String getLocationURI(Location location) {
         return MessageFormat.format("geo:{0},{1}?q={0},{1}",
                 getLatitude(location), getLongitude(location));
     }
 
-    private String getAccuracy(Location location){
+    private String getAccuracy(Location location) {
         float accuracy = location.getAccuracy();
         if (accuracy < 0.01) {
             return "?";
@@ -245,11 +250,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private String getLatitude(Location location){
+    private String getLatitude(Location location) {
         return String.format(Locale.US, "%2.6f", location.getLatitude());
     }
 
-    private String getLongitude(Location location){
+    private String getLongitude(Location location) {
         return String.format(Locale.US, "%3.6f", location.getLongitude());
     }
 }
