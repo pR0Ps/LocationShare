@@ -1,204 +1,260 @@
 package ca.cmetcalfe.locationshare;
 
-import android.support.v7.app.ActionBarActivity;
+import android.Manifest;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.view.Menu;
-import java.text.DecimalFormat;
+
 import java.text.MessageFormat;
+import java.util.Locale;
+
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.location.GpsStatus;
 import android.net.Uri;
-import android.os.Handler;
+import android.os.SystemClock;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
-    LocationManager mLocManager;
-    LocationListener mLocListener;
-    GpsStatus.Listener gpsStatusListener;
-    Location lastLocation;
-    long lastFix;
-    boolean hasFix;
+    private final static int PERMISSION_REQUEST = 1;
 
-    // TextViews
-    TextView tvLatitude;
-    TextView tvLongitude;
-    TextView tvAccuracy;
-    TextView tvTime;
+    private Button gpsButton;
+    private TextView progressTitle;
+    private ProgressBar progressBar;
+    private TextView detailsText;
 
-    final DecimalFormat accuracyFormat = new DecimalFormat("###.00");
+    private Button shareButton;
+    private Button copyButton;
+    private Button viewButton;
 
-    private Handler handler = new Handler();
-    private Runnable updateUITask = new Runnable() {
-        public void run() {
-            updateDisplay();
-            handler.postDelayed(this, 100);
+    private LocationManager locManager;
+    private Location lastLocation;
+
+    private LocationListener locListener = new LocationListener() {
+        public void onLocationChanged(Location loc) {
+            updateLocation(loc);
+        }
+        public void onProviderEnabled(String provider) {
+            updateLocation();
+        }
+        public void onProviderDisabled(String provider) {
+            updateLocation();
+        }
+        public void onStatusChanged(String provider, int status, Bundle extras) {
         }
     };
 
+    // ----------------------------------------------------
+    // Android Lifecycle
+    // ----------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final Context context = getApplicationContext();
+        // Display area
+        gpsButton = (Button)findViewById(R.id.gpsButton);
+        progressTitle = (TextView)findViewById(R.id.progressTitle);
+        progressBar = (ProgressBar)findViewById(R.id.progressBar);
+        detailsText = (TextView)findViewById(R.id.detailsText);
 
-        // Setup TextViews
-        tvLatitude = (TextView)findViewById(R.id.latitudeText);
-        tvLongitude = (TextView)findViewById(R.id.longitudeText);
-        tvAccuracy = (TextView)findViewById(R.id.accuracyText);
-        tvTime = (TextView)findViewById(R.id.timeText);
+        // Button area
+        shareButton = (Button)findViewById(R.id.shareButton);
+        copyButton = (Button)findViewById(R.id.copyButton);
+        viewButton = (Button)findViewById(R.id.viewButton);
 
-        hasFix = false;
+        locManager = (LocationManager)getSystemService(LOCATION_SERVICE);
+    }
 
-        mLocManager = (LocationManager)context.getSystemService(LOCATION_SERVICE);
-        boolean isGPSEnabled = mLocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-
-        if (isGPSEnabled && mLocManager != null){
-
-            // Create the LocationListener
-            mLocListener = new LocationListener(){
-                public void onLocationChanged(Location loc){
-                    updateLocation(loc);
-                }
-                public void onStatusChanged(String provider, int status, Bundle extras) {}
-                public void onProviderEnabled(String provider) {}
-                public void onProviderDisabled(String provider) {}
-            };
-
-            // Create the GPS status listener
-            gpsStatusListener = new GpsStatus.Listener(){
-                public void onGpsStatusChanged(int event){
-                    switch(event){
-                    case GpsStatus.GPS_EVENT_STARTED:
-                         System.out.println("GPS_EVENT_STARTED");
-                        break;
-                    case GpsStatus.GPS_EVENT_STOPPED:
-                        System.out.println("GPS_EVENT_STOPPED");
-                        break;
-                    case GpsStatus.GPS_EVENT_FIRST_FIX:
-                        System.out.println("GPS_EVENT_FIRST_FIX");
-                        hasFix = true;
-                        break;
-                    case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
-                        System.out.println("GPS_EVENT_SATELLITE_STATUS");
-                        if (lastLocation != null) {
-                            hasFix = (System.currentTimeMillis() - lastFix) < 2000;
-                        }
-
-                        if (hasFix) {
-                            System.out.println("HAS FIX");
-                            }
-                        else {
-                            System.out.println("NO FIX");
-                        }
-                    }
-                }
-            };
-
-            lastLocation = mLocManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if (lastLocation != null){
-                lastFix = lastLocation.getTime();
-            }
-
-            handler.post(updateUITask);
+    @Override
+    protected void onStop() {
+        super.onStop();
+        try {
+            locManager.removeUpdates(locListener);
+        } catch (SecurityException ignored) {
         }
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    protected void onStop(){
-        super.onStop();
-        mLocManager.removeUpdates(mLocListener);
-        mLocManager.removeGpsStatusListener(gpsStatusListener);
-    }
-
-    @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
-        mLocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mLocListener);
-        mLocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, mLocListener);
-        mLocManager.addGpsStatusListener(gpsStatusListener);
+        startRequestingLocation();
+        updateLocation();
     }
 
-    public void shareLocation (View view){
-        if (lastLocation == null){
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST &&
+                grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            startRequestingLocation();
+        } else {
+            Toast.makeText(getApplicationContext(), R.string.permission_denied, Toast.LENGTH_SHORT).show();
+            finish();
+        }
+    }
+
+    // ----------------------------------------------------
+    // UI
+    // ----------------------------------------------------
+    private void updateLocation() {
+        // Trigger a UI update without changing the location
+        updateLocation(lastLocation);
+    }
+
+    private void updateLocation(Location location) {
+        boolean locationEnabled = locManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        boolean waitingForLocation = locationEnabled && !validLocation(location);
+        boolean haveLocation = locationEnabled && !waitingForLocation;
+
+        // Update display area
+        gpsButton.setVisibility(locationEnabled ? View.GONE : View.VISIBLE);
+        progressTitle.setVisibility(waitingForLocation ? View.VISIBLE : View.GONE);
+        progressBar.setVisibility(waitingForLocation ? View.VISIBLE : View.GONE);
+        detailsText.setVisibility(haveLocation ? View.VISIBLE : View.GONE);
+
+        // Update buttons
+        shareButton.setEnabled(haveLocation);
+        copyButton.setEnabled(haveLocation);
+        viewButton.setEnabled(haveLocation);
+
+        if (haveLocation) {
+            String newline = System.getProperty("line.separator");
+            detailsText.setText(getString(R.string.accuracy) + ": " + getAccuracy(location) + newline +
+                    getString(R.string.latitude) + ": " + getLongitude(location) + newline +
+                    getString(R.string.longitude) + ": " + getLatitude(location));
+
+            lastLocation = location;
+        }
+    }
+
+    // ----------------------------------------------------
+    // Actions
+    // ----------------------------------------------------
+    public void shareLocation(View view) {
+        if (!validLocation(lastLocation)) {
             return;
         }
 
-        String link = formatLocation("http://maps.google.com/?q={0},{1}", lastLocation);
+        String link = getLocationLink(lastLocation);
 
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
         intent.putExtra(Intent.EXTRA_TEXT, link);
         intent.setType("text/plain");
-        startActivity(Intent.createChooser(intent, getResources().getText(R.string.send_via)));
+        startActivity(Intent.createChooser(intent, getString(R.string.share_location_via)));
     }
 
-    public void viewLocation (View view){
-        if (lastLocation == null){
+    public void copyLocation(View view) {
+        if (!validLocation(lastLocation)) {
             return;
         }
 
-        String uri = formatLocation("geo:{0},{1}?q={0},{1}", lastLocation);
+        String text = getLocationLink(lastLocation);
+
+        Object clipService = getSystemService(Context.CLIPBOARD_SERVICE);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+            @SuppressWarnings("deprecation")
+            android.text.ClipboardManager clipboard = (android.text.ClipboardManager)clipService;
+            clipboard.setText(text);
+        } else {
+            ClipboardManager clipboard = (ClipboardManager)clipService;
+            ClipData clip = ClipData.newPlainText(getString(R.string.app_name), text);
+            clipboard.setPrimaryClip(clip);
+        }
+
+        Toast.makeText(getApplicationContext(), R.string.copied, Toast.LENGTH_SHORT).show();
+    }
+
+    public void viewLocation(View view) {
+        if (!validLocation(lastLocation)) {
+            return;
+        }
+
+        String uri = getLocationURI(lastLocation);
 
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-        startActivity(Intent.createChooser(intent, getResources().getText(R.string.view_via)));
+        startActivity(Intent.createChooser(intent, getString(R.string.view_location_via)));
     }
 
-    public void updateLocation(Location location){
-        //TODO: Check if new location is 'better'
-        lastLocation = location;
-        lastFix = location.getTime();
-        updateDisplay();
-    }
-
-    public void updateDisplay(){
-
-        if (lastLocation != null){
-            long timeElapsed = System.currentTimeMillis() - lastFix;
-            tvTime.setText(stringifyTime(timeElapsed / 1000));
-
-            tvLatitude.setText("" + lastLocation.getLatitude());
-            tvLongitude.setText("" + lastLocation.getLongitude());
-            tvAccuracy.setText(accuracyFormat.format(lastLocation.getAccuracy()) + "m");
+    public void openLocationSettings(View view) {
+        if (!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
         }
-        else{
-            tvLatitude.setText("N/A");
-            tvLongitude.setText("N/A");
-            tvAccuracy.setText("N/A");
-            tvTime.setText("N/A");
+    }
+
+    // ----------------------------------------------------
+    // Helper functions
+    // ----------------------------------------------------
+    private void startRequestingLocation() {
+        if (!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            return;
         }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST);
+            return;
+        }
+
+        // GPS enabled and have permission - start requesting location updates
+        locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListener);
     }
 
-    private String formatLocation(String s, Location l){
-        // Hack to get around MessageFormat precision weirdness
-        return MessageFormat.format(s, ""+l.getLatitude(), ""+l.getLongitude(), ""+l.getAccuracy());
+    private boolean validLocation(Location location) {
+        if (location == null) {
+            return false;
+        }
+
+        // Location must be from less than 30 seconds ago to be considered valid
+        if (Build.VERSION.SDK_INT < 17) {
+            return System.currentTimeMillis() - location.getTime() < 30e3;
+        } else {
+            return SystemClock.elapsedRealtime() - location.getElapsedRealtimeNanos() < 30e9;
+        }
+
     }
 
-    public static String stringifyTime(long seconds) {
+    private String getLocationLink(Location location) {
+        return MessageFormat.format("https://maps.google.com/?q={0},{1}",
+                getLatitude(location), getLongitude(location));
+    }
 
-        int hours = (int)(seconds/3600);
-        seconds -= hours * 3600;
-        int minutes = (int)(seconds/60);
-        seconds -= minutes * 60;
+    private String getLocationURI(Location location) {
+        return MessageFormat.format("geo:{0},{1}?q={0},{1}",
+                getLatitude(location), getLongitude(location));
+    }
 
-        // Fix negative values (rounding)
-        seconds = Math.max(0, seconds);
+    private String getAccuracy(Location location) {
+        float accuracy = location.getAccuracy();
+        if (accuracy < 0.01) {
+            return "?";
+        } else if (accuracy > 99) {
+            return "99+";
+        } else {
+            return String.format(Locale.US, "%2.0fm", accuracy);
+        }
+    }
 
-        return MessageFormat.format("{0,number,00}:{1,number,00}:{2,number,00}", hours, minutes, seconds);
+    private String getLatitude(Location location) {
+        return String.format(Locale.US, "%2.6f", location.getLatitude());
+    }
+
+    private String getLongitude(Location location) {
+        return String.format(Locale.US, "%3.6f", location.getLongitude());
     }
 }
