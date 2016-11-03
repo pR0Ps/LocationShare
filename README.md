@@ -1,14 +1,13 @@
-LocationShare
-=============
+Location Share
+==============
 
-A simple Android application to share your location.
+Location Share is a simple Android application that allows you to share your current location.
 
-Unlike other applications, LocationShare doesn't require setting up an account, doesn't track your location in the background, doesn't autoshare it, and doesn't send it to anyone except those you explicitly tell it to.
+Location Share doesn't require setting up an account, doesn't track your location in the background,
+doesn't auto-share it, and doesn't send it to anyone except those you explicitly tell it to.
 
+It can share your location using any application that supports sharing plain text. This includes
+(but isn't limited to) sharing via SMS, email, social networks, note taking applications, etc.
 
-Usage
-=====
-
-Launch the application, wait until the device homes in on your location, then hit the share button.
-
-LocationShare allows you to share your location via any application that supports sharing plaintext. This includes (but isn't limited to) sharing via SMS, email, social networks, note taking appliactions, etc.
+Simply launch the application and wait until the device homes in on your location. You'll then have
+the option to view the location on a map, share it, or copy it to the clipboard.
