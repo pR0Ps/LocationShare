@@ -1,0 +1,16 @@
+<resources>
+    <string name="share_location">Teilen</string>
+    <string name="copy_location">Kopieren</string>
+    <string name="view_location">Ansehen</string>
+    <string name="copied">In Zwischenablage kopiert</string>
+    <string name="getting_location">Standort feststellen…</string>
+    <string name="share_location_via">Standort teilen via</string>
+    <string name="view_location_via">Standort ansehen via</string>
+
+    <string name="turn_on_GPS">GPS aktivieren</string>
+    <string name="permission_denied">GPS-Berechtigung abgelehnt</string>
+
+    <string name="accuracy">Genauigkeit</string>
+    <string name="latitude">Breitengrad</string>
+    <string name="longitude">Längengrad</string>
+</resources>
