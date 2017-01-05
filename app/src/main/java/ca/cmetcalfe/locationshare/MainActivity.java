@@ -230,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String getLocationLink(Location location) {
-        return MessageFormat.format("http://www.openstreetmap.org/?mlat={0}&mlon={1}",
+        return MessageFormat.format("http://www.openstreetmap.net/go?lat={0}&lon={1}&z=15",
                 getLatitude(location), getLongitude(location));
     }
 
