@@ -15,4 +15,7 @@
     <string name="accuracy">Accuracy</string>
     <string name="latitude">Latitude</string>
     <string name="longitude">Longitude</string>
+
+    <string name="format_dialog_title">Link Format</string>
+    <string name="format_dialog_finish">OK</string>
 </resources>
