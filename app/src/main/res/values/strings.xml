@@ -15,4 +15,11 @@
     <string name="accuracy">Accuracy</string>
     <string name="latitude">Latitude</string>
     <string name="longitude">Longitude</string>
+
+    <string name="choose_link">Choose a link type</string>
+
+    <string name="googlemaps">Google Maps</string>
+    <string name="openstreetmap">OpenStreetMap</string>
+    <string name="geouri">GeoURI</string>
+
 </resources>

@@ -3,6 +3,7 @@ package ca.cmetcalfe.locationshare;
 import android.Manifest;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.net.Uri;
 import android.os.SystemClock;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -143,41 +145,64 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // ----------------------------------------------------
+    // DialogInterface Listeners
+    // ----------------------------------------------------
+    private class onClickShareListener implements DialogInterface.OnClickListener {
+        @Override
+        public void onClick(DialogInterface dialog, int i) {
+            String link = formatLocation(lastLocation, getResources().getStringArray(R.array.link_templates)[i]);
+
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_SEND);
+            intent.putExtra(Intent.EXTRA_TEXT, link);
+            intent.setType("text/plain");
+            startActivity(Intent.createChooser(intent, getString(R.string.share_location_via)));
+        }
+    }
+
+    private class onClickCopyListener implements DialogInterface.OnClickListener {
+        @Override
+        public void onClick(DialogInterface dialog, int i) {
+            String text = formatLocation(lastLocation, getResources().getStringArray(R.array.link_templates)[i]);
+
+            Object clipService = getSystemService(Context.CLIPBOARD_SERVICE);
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+                @SuppressWarnings("deprecation")
+                android.text.ClipboardManager clipboard = (android.text.ClipboardManager)clipService;
+                clipboard.setText(text);
+            } else {
+                ClipboardManager clipboard = (ClipboardManager)clipService;
+                ClipData clip = ClipData.newPlainText(getString(R.string.app_name), text);
+                clipboard.setPrimaryClip(clip);
+            }
+
+            Toast.makeText(getApplicationContext(), R.string.copied, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // ----------------------------------------------------
     // Actions
     // ----------------------------------------------------
     public void shareLocation(View view) {
         if (!validLocation(lastLocation)) {
             return;
         }
-
-        String link = getLocationLink(lastLocation);
-
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_TEXT, link);
-        intent.setType("text/plain");
-        startActivity(Intent.createChooser(intent, getString(R.string.share_location_via)));
+        new AlertDialog.Builder(this).setTitle(R.string.choose_link)
+                .setCancelable(true)
+                .setItems(R.array.link_names, new onClickShareListener())
+                .create()
+                .show();
     }
 
     public void copyLocation(View view) {
         if (!validLocation(lastLocation)) {
             return;
         }
-
-        String text = getLocationLink(lastLocation);
-
-        Object clipService = getSystemService(Context.CLIPBOARD_SERVICE);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-            @SuppressWarnings("deprecation")
-            android.text.ClipboardManager clipboard = (android.text.ClipboardManager)clipService;
-            clipboard.setText(text);
-        } else {
-            ClipboardManager clipboard = (ClipboardManager)clipService;
-            ClipData clip = ClipData.newPlainText(getString(R.string.app_name), text);
-            clipboard.setPrimaryClip(clip);
-        }
-
-        Toast.makeText(getApplicationContext(), R.string.copied, Toast.LENGTH_SHORT).show();
+        new AlertDialog.Builder(this).setTitle(R.string.choose_link)
+                .setCancelable(true)
+                .setItems(R.array.link_names, new onClickCopyListener())
+                .create()
+                .show();
     }
 
     public void viewLocation(View view) {
@@ -185,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        String uri = getLocationURI(lastLocation);
+        String uri = formatLocation(lastLocation, "geo:{0},{1}?q={0},{1}");
 
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
         startActivity(Intent.createChooser(intent, getString(R.string.view_location_via)));
@@ -229,16 +254,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private String getLocationLink(Location location) {
-        return MessageFormat.format("https://maps.google.com/?q={0},{1}",
-                getLatitude(location), getLongitude(location));
-    }
-
-    private String getLocationURI(Location location) {
-        return MessageFormat.format("geo:{0},{1}?q={0},{1}",
-                getLatitude(location), getLongitude(location));
-    }
-
     private String getAccuracy(Location location) {
         float accuracy = location.getAccuracy();
         if (accuracy < 0.01) {
@@ -256,5 +271,10 @@ public class MainActivity extends AppCompatActivity {
 
     private String getLongitude(Location location) {
         return String.format(Locale.US, "%3.6f", location.getLongitude());
+    }
+
+    private String formatLocation(Location location, String format) {
+        return MessageFormat.format(format,
+                getLatitude(location), getLongitude(location));
     }
 }
