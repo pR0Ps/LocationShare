@@ -3,6 +3,7 @@ package ca.cmetcalfe.locationshare;
 import android.Manifest;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.net.Uri;
 import android.os.SystemClock;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -30,6 +32,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     private final static int PERMISSION_REQUEST = 1;
+    private final boolean[] selectedTypes = {true, false, false};
 
     private Button gpsButton;
     private TextView progressTitle;
@@ -56,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         public void onStatusChanged(String provider, int status, Bundle extras) {
         }
     };
+
 
     // ----------------------------------------------------
     // Android Lifecycle
@@ -150,13 +154,40 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        String link = getLocationLink(lastLocation);
-
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_TEXT, link);
-        intent.setType("text/plain");
-        startActivity(Intent.createChooser(intent, getString(R.string.share_location_via)));
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.type_dialog_title)
+                .setCancelable(false)
+                .setMultiChoiceItems(R.array.types, selectedTypes, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        if (isChecked) {
+                            selectedTypes[which] = true;
+                            return;
+                        }
+                        selectedTypes[which] = false;
+                    }
+                })
+                .setPositiveButton(R.string.type_dialog_finish, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        String link = "";
+                        if (selectedTypes[0]) {
+                            link = getGoogleMapsLocationLink(lastLocation) + "\n";
+                        }
+                        if (selectedTypes[1]) {
+                            link += "\n" + getOSMLocationLink(lastLocation) + "\n";
+                        }
+                        if (selectedTypes[2]) {
+                            link += "\n" + getLocationURI(lastLocation);
+                        }
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_SEND);
+                        intent.putExtra(Intent.EXTRA_TEXT, link);
+                        intent.setType("text/plain");
+                        startActivity(Intent.createChooser(intent, getString(R.string.share_location_via)));
+                    }
+                })
+                .create()
+                .show();
     }
 
     public void copyLocation(View view) {
@@ -164,7 +195,8 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        String text = getLocationLink(lastLocation);
+        //TODO: enable choice dialog for links types analogue to shareLocation(View view)
+        String text = getGoogleMapsLocationLink(lastLocation);
 
         Object clipService = getSystemService(Context.CLIPBOARD_SERVICE);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
@@ -229,8 +261,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private String getLocationLink(Location location) {
+    private String getGoogleMapsLocationLink(Location location) {
         return MessageFormat.format("https://maps.google.com/?q={0},{1}",
+                getLatitude(location), getLongitude(location));
+    }
+
+    private String getOSMLocationLink(Location location) {
+        return MessageFormat.format("https://www.openstreetmap.org/?mlat={lat}&mlon={lon}",
                 getLatitude(location), getLongitude(location));
     }
 
