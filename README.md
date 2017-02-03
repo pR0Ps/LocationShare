@@ -1,7 +1,18 @@
 Location Share
 ==============
 
-Location Share is a simple Android application that allows you to share your current location.
+A simple Android application that shares your current location.
+
+<a href="https://play.google.com/store/apps/details?id=ca.cmetcalfe.locationshare">
+  <img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
+       alt="Get it on Google Play"
+       height="80"/>
+</a>
+<a href="https://f-droid.org/app/ca.cmetcalfe.locationshare">
+  <img src="https://f-droid.org/badge/get-it-on.png"
+       alt="Get it on F-Droid"
+       height="80">
+</a>
 
 Location Share doesn't require setting up an account, doesn't track your location in the background,
 doesn't auto-share it, and doesn't send it to anyone except those you explicitly tell it to.
