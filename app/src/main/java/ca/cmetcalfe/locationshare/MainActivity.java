@@ -267,11 +267,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String getLatitude(Location location) {
-        return String.format(Locale.US, "%2.6f", location.getLatitude());
+        return String.format(Locale.US, "%2.5f", location.getLatitude());
     }
 
     private String getLongitude(Location location) {
-        return String.format(Locale.US, "%3.6f", location.getLongitude());
+        return String.format(Locale.US, "%3.5f", location.getLongitude());
     }
 
     private String formatLocation(Location location, String format) {
