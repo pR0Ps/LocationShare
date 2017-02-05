@@ -1,7 +1,7 @@
 # Location Share Changelog
 
 ### [v1.1] - 2017-02-04
-- Add a choice of 3 link types: Google Maps, OpenStreetMap, GeoURI
+- Add a choice of 3 URL types: Google Maps, OpenStreetMap, GeoURI
 - German translations - thanks [@mahula](https://github.com/mahula)
 
 ### [v1.0] - 2016-11-03

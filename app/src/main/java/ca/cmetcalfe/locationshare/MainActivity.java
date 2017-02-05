@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private LocationManager locManager;
     private Location lastLocation;
 
-    private LocationListener locListener = new LocationListener() {
+    private final LocationListener locListener = new LocationListener() {
         public void onLocationChanged(Location loc) {
             updateLocation(loc);
         }
@@ -136,9 +136,10 @@ public class MainActivity extends AppCompatActivity {
 
         if (haveLocation) {
             String newline = System.getProperty("line.separator");
-            detailsText.setText(getString(R.string.accuracy) + ": " + getAccuracy(location) + newline +
-                    getString(R.string.latitude) + ": " + getLongitude(location) + newline +
-                    getString(R.string.longitude) + ": " + getLatitude(location));
+            detailsText.setText(String.format("%s: %s%s%s: %s%s%s: %s",
+                    getString(R.string.accuracy), getAccuracy(location), newline,
+                    getString(R.string.latitude), getLongitude(location), newline,
+                    getString(R.string.longitude), getLatitude(location)));
 
             lastLocation = location;
         }
