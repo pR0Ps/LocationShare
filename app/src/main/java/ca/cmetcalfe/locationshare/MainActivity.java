@@ -138,8 +138,8 @@ public class MainActivity extends AppCompatActivity {
             String newline = System.getProperty("line.separator");
             detailsText.setText(String.format("%s: %s%s%s: %s%s%s: %s",
                     getString(R.string.accuracy), getAccuracy(location), newline,
-                    getString(R.string.latitude), getLongitude(location), newline,
-                    getString(R.string.longitude), getLatitude(location)));
+                    getString(R.string.latitude), getLatitude(location), newline,
+                    getString(R.string.longitude), getLongitude(location)));
 
             lastLocation = location;
         }
