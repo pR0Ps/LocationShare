@@ -24,6 +24,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -189,6 +191,29 @@ public class MainActivity extends AppCompatActivity {
             }
 
             Toast.makeText(getApplicationContext(), R.string.copied, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    //-----------------------------------------------------
+    // Menu related methods
+    //-----------------------------------------------------
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        this.getMenuInflater().inflate(R.menu.menu_toolbar, menu);
+        return  true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                Intent intentSettingsActivity = new Intent(this, SettingsActivity.class);
+                this.startActivity(intentSettingsActivity);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
         }
     }
 
