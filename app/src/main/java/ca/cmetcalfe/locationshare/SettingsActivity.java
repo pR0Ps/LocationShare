@@ -5,8 +5,14 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.LinearLayout;
 
 public class SettingsActivity extends PreferenceActivity {
+
+    private Toolbar toolbar;
 
 	private static Preference.OnPreferenceChangeListener prefsListener =
             new Preference.OnPreferenceChangeListener() {
@@ -31,6 +37,8 @@ public class SettingsActivity extends PreferenceActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setToolbar();
+
         addPreferencesFromResource(R.xml.preferences);
         bindPreferenceSummaryToValue(findPreference("prefLinkType"));
     }
@@ -45,5 +53,21 @@ public class SettingsActivity extends PreferenceActivity {
                                          PreferenceManager
                                                  .getDefaultSharedPreferences(pref.getContext())
                                                  .getString(pref.getKey(), ""));
+    }
+
+    // ----------------------------------------------------
+    // Helper functions
+    // ----------------------------------------------------
+    private void setToolbar() {
+        LinearLayout root = (LinearLayout)findViewById(android.R.id.list).getParent().getParent().getParent();
+        toolbar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.toolbar, root, false);
+        root.addView(toolbar, 0);
+        toolbar.setTitle(R.string.settings);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 }
