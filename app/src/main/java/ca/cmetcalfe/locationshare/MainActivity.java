@@ -18,6 +18,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -77,6 +78,9 @@ public class MainActivity extends AppCompatActivity {
         shareButton = (Button)findViewById(R.id.shareButton);
         copyButton = (Button)findViewById(R.id.copyButton);
         viewButton = (Button)findViewById(R.id.viewButton);
+
+        // Set default values for preferences
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         locManager = (LocationManager)getSystemService(LOCATION_SERVICE);
     }
