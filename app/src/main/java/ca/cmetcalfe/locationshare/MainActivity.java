@@ -3,7 +3,6 @@ package ca.cmetcalfe.locationshare;
 import android.Manifest;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,7 +20,6 @@ import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -158,42 +156,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // ----------------------------------------------------
-    // DialogInterface Listeners
-    // ----------------------------------------------------
-    private class onClickShareListener implements DialogInterface.OnClickListener {
-        @Override
-        public void onClick(DialogInterface dialog, int i) {
-            String link = formatLocation(lastLocation, getResources().getStringArray(R.array.link_templates)[i]);
-
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_SEND);
-            intent.putExtra(Intent.EXTRA_TEXT, link);
-            intent.setType("text/plain");
-            startActivity(Intent.createChooser(intent, getString(R.string.share_location_via)));
-        }
-    }
-
-    private class onClickCopyListener implements DialogInterface.OnClickListener {
-        @Override
-        public void onClick(DialogInterface dialog, int i) {
-            String text = formatLocation(lastLocation, getResources().getStringArray(R.array.link_templates)[i]);
-
-            Object clipService = getSystemService(Context.CLIPBOARD_SERVICE);
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-                @SuppressWarnings("deprecation")
-                android.text.ClipboardManager clipboard = (android.text.ClipboardManager)clipService;
-                clipboard.setText(text);
-            } else {
-                ClipboardManager clipboard = (ClipboardManager)clipService;
-                ClipData clip = ClipData.newPlainText(getString(R.string.app_name), text);
-                clipboard.setPrimaryClip(clip);
-            }
-
-            Toast.makeText(getApplicationContext(), R.string.copied, Toast.LENGTH_SHORT).show();
-        }
-    }
-
     //-----------------------------------------------------
     // Menu related methods
     //-----------------------------------------------------
@@ -224,22 +186,36 @@ public class MainActivity extends AppCompatActivity {
         if (!validLocation(lastLocation)) {
             return;
         }
-        new AlertDialog.Builder(this).setTitle(R.string.choose_link)
-                .setCancelable(true)
-                .setItems(R.array.link_names, new onClickShareListener())
-                .create()
-                .show();
+
+        String link = formatLocation(lastLocation, PreferenceManager.getDefaultSharedPreferences(this).getString("prefLinkType", ""));
+
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT, link);
+        intent.setType("text/plain");
+        startActivity(Intent.createChooser(intent, getString(R.string.share_location_via)));
     }
 
     public void copyLocation(View view) {
         if (!validLocation(lastLocation)) {
             return;
         }
-        new AlertDialog.Builder(this).setTitle(R.string.choose_link)
-                .setCancelable(true)
-                .setItems(R.array.link_names, new onClickCopyListener())
-                .create()
-                .show();
+
+        String link = formatLocation(lastLocation, PreferenceManager.getDefaultSharedPreferences(this).getString("prefLinkType", ""));
+
+        Object clipService = getSystemService(Context.CLIPBOARD_SERVICE);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+            @SuppressWarnings("deprecation")
+            android.text.ClipboardManager clipboard = (android.text.ClipboardManager)clipService;
+            clipboard.setText(link);
+        } else {
+            ClipboardManager clipboard = (ClipboardManager)clipService;
+            ClipData clip = ClipData.newPlainText(getString(R.string.app_name), link);
+            clipboard.setPrimaryClip(clip);
+        }
+
+        Toast.makeText(getApplicationContext(), R.string.copied, Toast.LENGTH_SHORT).show();
+
     }
 
     public void viewLocation(View view) {
