@@ -15,4 +15,7 @@
     <string name="longitude">Längengrad</string>
 
     <string name="choose_link">Linktyp auswählen</string>
+
+    <string name="settings">Einstellungen</string>
+    <string name="link_type">Linktyp</string>
 </resources>

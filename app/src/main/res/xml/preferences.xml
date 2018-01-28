@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:key="prefLinkType"
+        android:title="@string/link_type"
+        android:dialogTitle="@string/choose_link"
+        android:entries="@array/link_names"
+        android:entryValues="@array/link_templates"
+        android:defaultValue="@string/pref_link_type_default" />
+</PreferenceScreen>

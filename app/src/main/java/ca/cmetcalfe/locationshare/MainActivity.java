@@ -3,7 +3,6 @@ package ca.cmetcalfe.locationshare;
 import android.Manifest;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,10 +17,13 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -32,6 +34,8 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     private final static int PERMISSION_REQUEST = 1;
+
+    private Toolbar toolbar;
 
     private Button gpsButton;
     private TextView progressTitle;
@@ -67,6 +71,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        setTitle(R.string.app_name);
+
         // Display area
         gpsButton = (Button)findViewById(R.id.gpsButton);
         progressTitle = (TextView)findViewById(R.id.progressTitle);
@@ -77,6 +85,9 @@ public class MainActivity extends AppCompatActivity {
         shareButton = (Button)findViewById(R.id.shareButton);
         copyButton = (Button)findViewById(R.id.copyButton);
         viewButton = (Button)findViewById(R.id.viewButton);
+
+        // Set default values for preferences
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         locManager = (LocationManager)getSystemService(LOCATION_SERVICE);
     }
@@ -145,39 +156,26 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // ----------------------------------------------------
-    // DialogInterface Listeners
-    // ----------------------------------------------------
-    private class onClickShareListener implements DialogInterface.OnClickListener {
-        @Override
-        public void onClick(DialogInterface dialog, int i) {
-            String link = formatLocation(lastLocation, getResources().getStringArray(R.array.link_templates)[i]);
+    //-----------------------------------------------------
+    // Menu related methods
+    //-----------------------------------------------------
 
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_SEND);
-            intent.putExtra(Intent.EXTRA_TEXT, link);
-            intent.setType("text/plain");
-            startActivity(Intent.createChooser(intent, getString(R.string.share_location_via)));
-        }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        this.getMenuInflater().inflate(R.menu.menu_toolbar, menu);
+        return  true;
     }
 
-    private class onClickCopyListener implements DialogInterface.OnClickListener {
-        @Override
-        public void onClick(DialogInterface dialog, int i) {
-            String text = formatLocation(lastLocation, getResources().getStringArray(R.array.link_templates)[i]);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                Intent intentSettingsActivity = new Intent(this, SettingsActivity.class);
+                this.startActivity(intentSettingsActivity);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
 
-            Object clipService = getSystemService(Context.CLIPBOARD_SERVICE);
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-                @SuppressWarnings("deprecation")
-                android.text.ClipboardManager clipboard = (android.text.ClipboardManager)clipService;
-                clipboard.setText(text);
-            } else {
-                ClipboardManager clipboard = (ClipboardManager)clipService;
-                ClipData clip = ClipData.newPlainText(getString(R.string.app_name), text);
-                clipboard.setPrimaryClip(clip);
-            }
-
-            Toast.makeText(getApplicationContext(), R.string.copied, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -188,22 +186,36 @@ public class MainActivity extends AppCompatActivity {
         if (!validLocation(lastLocation)) {
             return;
         }
-        new AlertDialog.Builder(this).setTitle(R.string.choose_link)
-                .setCancelable(true)
-                .setItems(R.array.link_names, new onClickShareListener())
-                .create()
-                .show();
+
+        String link = formatLocation(lastLocation, PreferenceManager.getDefaultSharedPreferences(this).getString("prefLinkType", ""));
+
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT, link);
+        intent.setType("text/plain");
+        startActivity(Intent.createChooser(intent, getString(R.string.share_location_via)));
     }
 
     public void copyLocation(View view) {
         if (!validLocation(lastLocation)) {
             return;
         }
-        new AlertDialog.Builder(this).setTitle(R.string.choose_link)
-                .setCancelable(true)
-                .setItems(R.array.link_names, new onClickCopyListener())
-                .create()
-                .show();
+
+        String link = formatLocation(lastLocation, PreferenceManager.getDefaultSharedPreferences(this).getString("prefLinkType", ""));
+
+        Object clipService = getSystemService(Context.CLIPBOARD_SERVICE);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+            @SuppressWarnings("deprecation")
+            android.text.ClipboardManager clipboard = (android.text.ClipboardManager)clipService;
+            clipboard.setText(link);
+        } else {
+            ClipboardManager clipboard = (ClipboardManager)clipService;
+            ClipData clip = ClipData.newPlainText(getString(R.string.app_name), link);
+            clipboard.setPrimaryClip(clip);
+        }
+
+        Toast.makeText(getApplicationContext(), R.string.copied, Toast.LENGTH_SHORT).show();
+
     }
 
     public void viewLocation(View view) {
