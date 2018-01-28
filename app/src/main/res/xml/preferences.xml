@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ListPreference
-        android:key="@string/list_pref_Key"
+        android:key="prefLinkType"
         android:title="@string/link_type"
         android:dialogTitle="@string/choose_link"
         android:entries="@array/link_names"
