@@ -23,6 +23,7 @@
     <string name="geouri" translatable="false">GeoURI</string>
 
     <string name="settings">Settings</string>
+    <string name="list_pref_Key" translatable="false">prefLinkType</string>
     <string name="link_type">Link type</string>
     <string name="pref_link_type_default" translatable="false">https://maps.google.com/?q={0},{1}</string>
 
