@@ -4,6 +4,7 @@
           package="ca.cmetcalfe.locationshare">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-feature android:name="android.hardware.location.gps" />
 
     <application
         android:allowBackup="true"
@@ -20,8 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".SettingsActivity"
-            android:label="@string/settings"
-            android:parentActivityName=".MainActivity" >
+            android:label="@string/settings" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
