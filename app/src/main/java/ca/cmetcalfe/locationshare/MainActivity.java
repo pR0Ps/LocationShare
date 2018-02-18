@@ -22,6 +22,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,8 +35,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     private final static int PERMISSION_REQUEST = 1;
-
-    private Toolbar toolbar;
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     private Button gpsButton;
     private TextView progressTitle;
@@ -70,21 +70,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar((Toolbar)findViewById(R.id.toolbar));
         setTitle(R.string.app_name);
 
         // Display area
-        gpsButton = (Button)findViewById(R.id.gpsButton);
-        progressTitle = (TextView)findViewById(R.id.progressTitle);
-        progressBar = (ProgressBar)findViewById(R.id.progressBar);
-        detailsText = (TextView)findViewById(R.id.detailsText);
+        gpsButton = findViewById(R.id.gpsButton);
+        progressTitle = findViewById(R.id.progressTitle);
+        progressBar = findViewById(R.id.progressBar);
+        detailsText = findViewById(R.id.detailsText);
 
         // Button area
-        shareButton = (Button)findViewById(R.id.shareButton);
-        copyButton = (Button)findViewById(R.id.copyButton);
-        viewButton = (Button)findViewById(R.id.viewButton);
+        shareButton = findViewById(R.id.shareButton);
+        copyButton = findViewById(R.id.copyButton);
+        viewButton = findViewById(R.id.viewButton);
 
         // Set default values for preferences
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
@@ -97,7 +95,8 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
         try {
             locManager.removeUpdates(locListener);
-        } catch (SecurityException ignored) {
+        } catch (SecurityException e) {
+            Log.e(TAG, "Failed to stop listening for location updates", e);
         }
     }
 
@@ -203,19 +202,16 @@ public class MainActivity extends AppCompatActivity {
 
         String link = formatLocation(lastLocation, PreferenceManager.getDefaultSharedPreferences(this).getString("prefLinkType", ""));
 
-        Object clipService = getSystemService(Context.CLIPBOARD_SERVICE);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-            @SuppressWarnings("deprecation")
-            android.text.ClipboardManager clipboard = (android.text.ClipboardManager)clipService;
-            clipboard.setText(link);
-        } else {
-            ClipboardManager clipboard = (ClipboardManager)clipService;
+        ClipboardManager clipboard = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+        if (clipboard != null){
             ClipData clip = ClipData.newPlainText(getString(R.string.app_name), link);
             clipboard.setPrimaryClip(clip);
+            Toast.makeText(getApplicationContext(), R.string.copied, Toast.LENGTH_SHORT).show();
         }
-
-        Toast.makeText(getApplicationContext(), R.string.copied, Toast.LENGTH_SHORT).show();
-
+        else {
+            Log.e(TAG, "Failed to get the clipboard service");
+            Toast.makeText(getApplicationContext(), R.string.clipboard_error, Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void viewLocation(View view) {

@@ -12,8 +12,6 @@ import android.widget.LinearLayout;
 
 public class SettingsActivity extends PreferenceActivity {
 
-    private Toolbar toolbar;
-
 	private static Preference.OnPreferenceChangeListener prefsListener =
             new Preference.OnPreferenceChangeListener() {
                 @Override
@@ -60,7 +58,7 @@ public class SettingsActivity extends PreferenceActivity {
     // ----------------------------------------------------
     private void setToolbar() {
         LinearLayout root = (LinearLayout)findViewById(android.R.id.list).getParent().getParent().getParent();
-        toolbar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.toolbar, root, false);
+        Toolbar toolbar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.toolbar, root, false);
         root.addView(toolbar, 0);
         toolbar.setTitle(R.string.settings);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

@@ -5,6 +5,7 @@
     <string name="copy_location">Copy</string>
     <string name="view_location">View</string>
     <string name="copied">Copied to clipboard</string>
+    <string name="clipboard_error">Failed to copy text to clipboard</string>
     <string name="getting_location">Getting location…</string>
     <string name="share_location_via">Share location via</string>
     <string name="view_location_via">View location via</string>
