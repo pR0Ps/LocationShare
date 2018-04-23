@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name" translatable="false">Location Share</string>
+
+    <string name="share_location">Del</string>
+    <string name="copy_location">Kopier</string>
+    <string name="view_location">Vis</string>
+    <string name="copied">Kopiert til utklippstavle</string>
+    <string name="clipboard_error">Feilet i å kopiere tekst til utklippstavle</string>
+    <string name="getting_location">Henter posisjon…</string>
+    <string name="share_location_via">Del posisjon via</string>
+    <string name="view_location_via">Vis posisjon via</string>
+
+    <string name="turn_on_GPS">Slå på GPS</string>
+    <string name="permission_denied">GPS-tillatelse avslått</string>
+
+    <string name="accuracy">Nøyaktighet</string>
+    <string name="latitude">Breddegrad</string>
+    <string name="longitude">Lengdegrad</string>
+
+    <string name="choose_link">Velg en lenketype</string>
+
+    <string name="googlemaps" translatable="false">Google Maps</string>
+    <string name="openstreetmap" translatable="false">OpenStreetMap</string>
+    <string name="geouri" translatable="false">GeoURI</string>
+
+    <string name="settings">Innstillinger</string>
+    <string name="link_type">Lenketype</string>
+    <string name="pref_link_type_default" translatable="false">https://maps.google.com/?q={0},{1}</string>
+
+</resources>
