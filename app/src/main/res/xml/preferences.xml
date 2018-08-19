@@ -5,7 +5,7 @@
         android:key="prefLinkType"
         android:title="@string/link_type"
         android:dialogTitle="@string/choose_link"
-        android:entries="@array/link_names"
-        android:entryValues="@array/link_templates"
-        android:defaultValue="@string/pref_link_type_default" />
+        android:entries="@array/settings_options"
+        android:entryValues="@array/options_templates"
+        android:defaultValue="@string/always_ask" />
 </PreferenceScreen>
