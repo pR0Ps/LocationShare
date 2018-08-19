@@ -1,0 +1,30 @@
+﻿<resources>
+    <string name="app_name" translatable="false">Location Share</string>
+
+    <string name="share_location">Delen</string>
+    <string name="copy_location">Kopiëren</string>
+    <string name="view_location">Bekijken</string>
+    <string name="copied">Gekopieerd naar klembord</string>
+    <string name="clipboard_error">Tekst kopiëren naar klembord mislukt</string>
+    <string name="getting_location">Bezig met ophalen van locatie…</string>
+    <string name="share_location_via">Locatie delen via</string>
+    <string name="view_location_via">Locatie bekijken via</string>
+
+    <string name="turn_on_GPS">GPS inschakelen</string>
+    <string name="permission_denied">GPS-machtiging geweigerd</string>
+
+    <string name="accuracy">Nauwkeurigheid</string>
+    <string name="latitude">Breedtegraad</string>
+    <string name="longitude">Lengtegraad</string>
+
+    <string name="choose_link">Kies een linksoort</string>
+
+    <string name="googlemaps" translatable="false">Google Maps</string>
+    <string name="openstreetmap" translatable="false">OpenStreetMap</string>
+    <string name="geouri" translatable="false">GeoURI</string>
+
+    <string name="settings">Instellingen</string>
+    <string name="link_type">Linksoort</string>
+    <string name="pref_link_type_default" translatable="false">https://maps.google.com/?q={0},{1}</string>
+
+</resources>
