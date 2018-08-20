@@ -1,8 +1,10 @@
 package ca.cmetcalfe.locationshare;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -155,6 +157,23 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // ----------------------------------------------------
+    // DialogInterface Listeners
+    // ----------------------------------------------------
+    private class onClickShareListener implements DialogInterface.OnClickListener {
+        @Override
+        public void onClick(DialogInterface dialog, int i) {
+            shareLocationText(formatLocation(lastLocation, getResources().getStringArray(R.array.link_templates)[i]));
+        }
+    }
+
+    private class onClickCopyListener implements DialogInterface.OnClickListener {
+        @Override
+        public void onClick(DialogInterface dialog, int i) {
+            copyLocationText(formatLocation(lastLocation, getResources().getStringArray(R.array.link_templates)[i]));
+        }
+    }
+
     //-----------------------------------------------------
     // Menu related methods
     //-----------------------------------------------------
@@ -186,13 +205,17 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        String link = formatLocation(lastLocation, PreferenceManager.getDefaultSharedPreferences(this).getString("prefLinkType", ""));
+        String linkChoice = PreferenceManager.getDefaultSharedPreferences(this).getString("prefLinkType", "");
 
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_TEXT, link);
-        intent.setType("text/plain");
-        startActivity(Intent.createChooser(intent, getString(R.string.share_location_via)));
+        if (linkChoice.equals(getResources().getString(R.string.always_ask))) {
+            new AlertDialog.Builder(this).setTitle(R.string.choose_link)
+                    .setCancelable(true)
+                    .setItems(R.array.link_names, new onClickShareListener())
+                    .create()
+                    .show();
+        } else {
+            shareLocationText(formatLocation(lastLocation, linkChoice));
+        }
     }
 
     public void copyLocation(View view) {
@@ -200,17 +223,16 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        String link = formatLocation(lastLocation, PreferenceManager.getDefaultSharedPreferences(this).getString("prefLinkType", ""));
+        String linkChoice = PreferenceManager.getDefaultSharedPreferences(this).getString("prefLinkType", "");
 
-        ClipboardManager clipboard = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
-        if (clipboard != null){
-            ClipData clip = ClipData.newPlainText(getString(R.string.app_name), link);
-            clipboard.setPrimaryClip(clip);
-            Toast.makeText(getApplicationContext(), R.string.copied, Toast.LENGTH_SHORT).show();
-        }
-        else {
-            Log.e(TAG, "Failed to get the clipboard service");
-            Toast.makeText(getApplicationContext(), R.string.clipboard_error, Toast.LENGTH_SHORT).show();
+        if (linkChoice.equals(getResources().getString(R.string.always_ask))) {
+            new AlertDialog.Builder(this).setTitle(R.string.choose_link)
+                    .setCancelable(true)
+                    .setItems(R.array.link_names, new onClickCopyListener())
+                    .create()
+                    .show();
+        } else {
+            copyLocationText(formatLocation(lastLocation, linkChoice));
         }
     }
 
@@ -234,6 +256,27 @@ public class MainActivity extends AppCompatActivity {
     // ----------------------------------------------------
     // Helper functions
     // ----------------------------------------------------
+    public void shareLocationText(String string){
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT, string);
+        intent.setType("text/plain");
+        startActivity(Intent.createChooser(intent, getString(R.string.share_location_via)));
+    }
+
+    public void copyLocationText(String string){
+        ClipboardManager clipboard = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+        if (clipboard != null){
+            ClipData clip = ClipData.newPlainText(getString(R.string.app_name), string);
+            clipboard.setPrimaryClip(clip);
+            Toast.makeText(getApplicationContext(), R.string.copied, Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Log.e(TAG, "Failed to get the clipboard service");
+            Toast.makeText(getApplicationContext(), R.string.clipboard_error, Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void startRequestingLocation() {
         if (!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             return;

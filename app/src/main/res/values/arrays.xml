@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string-array name="settings_options">
+        <item>@string/googlemaps</item>
+        <item>@string/openstreetmap</item>
+        <item>@string/geouri</item>
+        <item>@string/always_ask</item>
+    </string-array>
+
   <string-array name="link_names">
       <item>@string/googlemaps</item>
       <item>@string/openstreetmap</item>
       <item>@string/geouri</item>
   </string-array>
+
+    <string-array name="options_templates" translatable="false">
+        <item>https://maps.google.com/?q={0},{1}</item>
+        <item>https://openstreetmap.org/?mlat={0}&amp;mlon={1}</item>
+        <item>geo:{0},{1}</item>
+        <item>@string/always_ask</item>
+    </string-array>
 
   <string-array name="link_templates" translatable="false">
       <item>https://maps.google.com/?q={0},{1}</item>
