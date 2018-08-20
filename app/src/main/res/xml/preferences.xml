@@ -6,6 +6,6 @@
         android:title="@string/link_type"
         android:dialogTitle="@string/choose_link"
         android:entries="@array/settings_options"
-        android:entryValues="@array/options_templates"
+        android:entryValues="@array/link_options"
         android:defaultValue="@string/always_ask" />
 </PreferenceScreen>

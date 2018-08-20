@@ -13,16 +13,10 @@
       <item>@string/geouri</item>
   </string-array>
 
-    <string-array name="options_templates" translatable="false">
-        <item>https://maps.google.com/?q={0},{1}</item>
-        <item>https://openstreetmap.org/?mlat={0}&amp;mlon={1}</item>
-        <item>geo:{0},{1}</item>
-        <item>@string/always_ask</item>
-    </string-array>
-
-  <string-array name="link_templates" translatable="false">
+  <string-array name="link_options" translatable="false">
       <item>https://maps.google.com/?q={0},{1}</item>
       <item>https://openstreetmap.org/?mlat={0}&amp;mlon={1}</item>
       <item>geo:{0},{1}</item>
+      <item>@string/always_ask</item>
   </string-array>
 </resources>

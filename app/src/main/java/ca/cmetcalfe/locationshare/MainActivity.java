@@ -163,14 +163,14 @@ public class MainActivity extends AppCompatActivity {
     private class onClickShareListener implements DialogInterface.OnClickListener {
         @Override
         public void onClick(DialogInterface dialog, int i) {
-            shareLocationText(formatLocation(lastLocation, getResources().getStringArray(R.array.link_templates)[i]));
+            shareLocationText(formatLocation(lastLocation, getResources().getStringArray(R.array.link_options)[i]));
         }
     }
 
     private class onClickCopyListener implements DialogInterface.OnClickListener {
         @Override
         public void onClick(DialogInterface dialog, int i) {
-            copyLocationText(formatLocation(lastLocation, getResources().getStringArray(R.array.link_templates)[i]));
+            copyLocationText(formatLocation(lastLocation, getResources().getStringArray(R.array.link_options)[i]));
         }
     }
 
