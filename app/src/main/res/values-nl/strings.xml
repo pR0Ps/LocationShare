@@ -1,6 +1,4 @@
-﻿<resources>
-    <string name="app_name" translatable="false">Location Share</string>
-
+<resources>
     <string name="share_location">Delen</string>
     <string name="copy_location">Kopiëren</string>
     <string name="view_location">Bekijken</string>
@@ -20,11 +18,7 @@
     <string name="choose_link">Kies een linksoort</string>
 
     <string name="always_ask">Altijd vragen</string>
-    <string name="googlemaps" translatable="false">Google Maps</string>
-    <string name="openstreetmap" translatable="false">OpenStreetMap</string>
-    <string name="geouri" translatable="false">GeoURI</string>
 
     <string name="settings">Instellingen</string>
     <string name="link_type">Linksoort</string>
-
 </resources>
