@@ -1,0 +1,24 @@
+<resources>
+    <string name="share_location">Del</string>
+    <string name="copy_location">Kopiér</string>
+    <string name="view_location">Se</string>
+    <string name="copied">Kopieret til udklipsholder</string>
+    <string name="clipboard_error">Kunne ikke kopiere til udklipsholder</string>
+    <string name="getting_location">Fastslår sted...</string>
+    <string name="share_location_via">Del sted via</string>
+    <string name="view_location_via">Se sted via</string>
+
+    <string name="turn_on_GPS">Aktivér GPS</string>
+    <string name="permission_denied">GPS-tilladelse afvist</string>
+
+    <string name="accuracy">Nøjagtighed</string>
+    <string name="latitude">Breddegrad</string>
+    <string name="longitude">Længdegrad</string>
+
+    <string name="choose_link">Vælg en linktype</string>
+
+    <string name="always_ask">Spørg hver gang</string>
+
+    <string name="settings">Indstillinger</string>
+    <string name="link_type">Linktype</string>
+</resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="share_location">Споделяне</string>
+    <string name="copy_location">Копиране</string>
+    <string name="view_location">Изглед</string>
+    <string name="copied">Копирано в клипборда</string>
+    <string name="clipboard_error">Неуспешно копиране на текст в клипборда</string>
+    <string name="getting_location">"Установяване на местоположение ... "</string>
+    <string name="share_location_via">Споделяне на местоположение чрез</string>
+    <string name="view_location_via">Показване на местоположението чрез</string>
+    <string name="turn_on_GPS">Включване на GPS</string>
+    <string name="permission_denied">Отказано разрешение за GPS</string>
+    <string name="accuracy">Точност</string>
+    <string name="latitude">Географска ширина</string>
+    <string name="longitude">Географска дължина</string>
+    <string name="choose_link">Изберете тип връзка</string>
+    <string name="always_ask">Питай всеки път</string>
+    <string name="settings">Настройки</string>
+</resources>

@@ -1,0 +1,24 @@
+<resources>
+    <string name="share_location">Dela</string>
+    <string name="copy_location">Kopiera</string>
+    <string name="view_location">Titta</string>
+    <string name="copied">Kopierat till urklipp</string>
+    <string name="clipboard_error">Misslyckad kopiering till urklipp</string>
+    <string name="getting_location">Hitta plats</string>
+    <string name="share_location_via">Dela platsen via</string>
+    <string name="view_location_via">Titta på platsen via</string>
+
+    <string name="turn_on_GPS">Aktivera GPS</string>
+    <string name="permission_denied">GPS-godkännande inte tillåten</string>
+
+    <string name="accuracy">Noggrannhet</string>
+    <string name="latitude">Breddgrad</string>
+    <string name="longitude">Längdgrad</string>
+
+    <string name="choose_link">Välja ut länktyp</string>
+
+    <string name="always_ask">Fråga mig varje gång</string>
+
+    <string name="settings">Inställningar</string>
+    <string name="link_type">Länktyp</string>
+</resources>

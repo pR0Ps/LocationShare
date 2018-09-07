@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="share_location">Partager</string>
+    <string name="copy_location">Copier</string>
+    <string name="view_location">Voir</string>
+    <string name="copied">Copié dans le presse-papier</string>
+    <string name="clipboard_error">"Échec de la copie dans le presse-papier "</string>
+    <string name="getting_location">Obtention de l’emplacement en cours…</string>
+    <string name="share_location_via">Partager l’emplacement par</string>
+    <string name="view_location_via">Voir l’emplacement sur</string>
+    <string name="turn_on_GPS">Activer le GPS</string>
+    <string name="permission_denied">Autorisation GPS refusée</string>
+    <string name="accuracy">Précision</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="choose_link">Choisir un type de lien</string>
+    <string name="always_ask">Me demander à chaque fois</string>
+    <string name="settings">Paramètres</string>
+    <string name="link_type">Type de lien</string>
+</resources>
