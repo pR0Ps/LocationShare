@@ -1,0 +1,24 @@
+<resources>
+    <string name="share_location">共有</string>
+    <string name="copy_location">コピー</string>
+    <string name="view_location">ビュー</string>
+    <string name="copied">クリップボードにコピーしました</string>
+    <string name="clipboard_error">テキストをクリップボードにコピーできませんでした</string>
+    <string name="getting_location">ロケーション場所を取得しています。</string>
+    <string name="share_location_via">ロケーションのシェア</string>
+    <string name="view_location_via">ロケーションを見る</string>
+
+    <string name="turn_on_GPS">GPSをオンにする</string>
+    <string name="permission_denied">GPSへアクセス拒否されました。</string>
+
+    <string name="accuracy">正確度</string>
+    <string name="latitude">緯度</string>
+    <string name="longitude">経度</string>
+
+    <string name="choose_link">リンクタイプの選択</string>
+
+    <string name="always_ask">毎回尋ねる</string>
+
+    <string name="settings">設定</string>
+    <string name="link_type">リンクタイプ</string>
+</resources>

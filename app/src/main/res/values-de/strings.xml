@@ -3,6 +3,7 @@
     <string name="copy_location">Kopieren</string>
     <string name="view_location">Ansehen</string>
     <string name="copied">In Zwischenablage kopiert</string>
+    <string name="clipboard_error">Kopieren in Zwischenablage fehlgeschlagen</string>
     <string name="getting_location">Standort feststellen…</string>
     <string name="share_location_via">Standort teilen via</string>
     <string name="view_location_via">Standort ansehen via</string>

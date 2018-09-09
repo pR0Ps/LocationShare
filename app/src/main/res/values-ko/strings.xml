@@ -1,0 +1,24 @@
+<resources>
+    <string name="share_location">공유하기</string>
+    <string name="copy_location">복사</string>
+    <string name="view_location">보기</string>
+    <string name="copied">클립보드에 복사</string>
+    <string name="clipboard_error">"텍스트를 클립보드에 복사하지 못했습니다."</string>
+    <string name="getting_location">위치 얻기</string>
+    <string name="share_location_via">위치 공유하기</string>
+    <string name="view_location_via">위치 보기</string>
+
+    <string name="turn_on_GPS">GPS 켜기</string>
+    <string name="permission_denied">GPS 승인이 거부되었습니다.</string>
+
+    <string name="accuracy">정확도</string>
+    <string name="latitude">위도</string>
+    <string name="longitude">경도</string>
+
+    <string name="choose_link">링크타입 선택하기</string>
+
+    <string name="always_ask">항상 물어보기</string>
+
+    <string name="settings">설정</string>
+    <string name="link_type">링크 타입</string>
+</resources>
