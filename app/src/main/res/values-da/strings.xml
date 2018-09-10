@@ -4,7 +4,7 @@
     <string name="view_location">Se</string>
     <string name="copied">Kopieret til udklipsholder</string>
     <string name="clipboard_error">Kunne ikke kopiere til udklipsholder</string>
-    <string name="getting_location">Fastslår sted...</string>
+    <string name="getting_location">Fastslår sted…</string>
     <string name="share_location_via">Del sted via</string>
     <string name="view_location_via">Se sted via</string>
 
