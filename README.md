@@ -22,3 +22,15 @@ It can share your location using any application that supports sharing plain tex
 
 Simply launch the application and wait until the device homes in on your location. You'll then have
 the option to view the location on a map, share it, or copy it to the clipboard.
+
+Contributors
+------------
+
+* [FTno](https://github.com/FTno) - Norwegian translation
+* [Heimen Stoffels](https://github.com/Vistaus) - Dutch translation
+* Karen Mondrup - Danish translation
+* [mahula](https://github.com/mahula) - Link type setting, German translation, bug fixes, etc
+* [Pauline Dabrowski](https://www.linkedin.com/in/paulinedabrowski) - French translation
+* [Sabine Finke](https://www.facebook.com/konstglas.sabinefinke/) - Swedish translation
+* Stanimira Penkova - Bulgarian translation
+* Una Wang - Korean translation
