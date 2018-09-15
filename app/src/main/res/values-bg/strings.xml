@@ -20,4 +20,5 @@
     <string name="always_ask">Питай всеки път</string>
 
     <string name="settings">Настройки</string>
+    <string name="link_type">тип на връзката</string><!-- Note: Google Translate -->
 </resources>
