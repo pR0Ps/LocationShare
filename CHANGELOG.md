@@ -1,12 +1,12 @@
 # Location Share Changelog
 
 ### [v1.3.1] - 2018-09-14
-- Added 2 missing translations
+- Added 2 missing translated strings
 
 ### [v1.3] - 2018-09-09
 - Added the ability to configure the URL type in a settings menu - thanks [@mahula](https://github.com/mahula)
-- The supported SDK range is now 14 to 27 (was 9 to 25)
-- Added many translations (see README for contributors)
+- Added translations for Bulgarian, Danish, Dutch, French, Japanese, Korean, Norwegian, and Swedish (see README for contributors)
+- Updated the supported SDK range (now 14 to 27, was 9 to 25)
 
 ### [v1.2] - 2017-02-06
 - Fix lat/long display - thanks [@mahula](https://github.com/mahula)
