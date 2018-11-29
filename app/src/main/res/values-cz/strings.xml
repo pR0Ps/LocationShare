@@ -17,9 +17,9 @@
     <string name="latitude">Šířka</string>
     <string name="longitude">Délka</string>
 
-    <string name="choose_link">Vyberte typ odkazu</string>
+    <string name="choose_link">Zvolte typ odkazu</string>
 
-    <string name="always_ask">Vždy se zeptat</string>
+    <string name="always_ask">Vždy se dotázat</string>
     <string name="googlemaps" translatable="false">Mapy Google</string>
     <string name="openstreetmap" translatable="false">OpenStreetMap</string>
     <string name="geouri" translatable="false">GeoURI</string>
