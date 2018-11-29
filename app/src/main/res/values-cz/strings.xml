@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name" translatable="false">Sdílení polohy</string>
+
+    <string name="share_location">Sdílet</string>
+    <string name="copy_location">Kopírovat</string>
+    <string name="view_location">Zobrazit</string>
+    <string name="copied">Zkopírováno do schránky</string>
+    <string name="clipboard_error">Chyba při kopírování do schránky</string>
+    <string name="getting_location">Zjišťuji polohu…</string>
+    <string name="share_location_via">Sdílet polohu pomocí...</string>
+    <string name="view_location_via">Zobrazit polohu pomocí...</string>
+
+    <string name="turn_on_GPS">Zapnout GPS</string>
+    <string name="permission_denied">Odepřen přístup k GPS</string>
+
+    <string name="accuracy">Přesnost</string>
+    <string name="latitude">Šířka</string>
+    <string name="longitude">Délka</string>
+
+    <string name="choose_link">Vyberte typ odkazu</string>
+
+    <string name="always_ask">Vždy se zeptat</string>
+    <string name="googlemaps" translatable="false">Mapy Google</string>
+    <string name="openstreetmap" translatable="false">OpenStreetMap</string>
+    <string name="geouri" translatable="false">GeoURI</string>
+
+    <string name="settings">Nastavení</string>
+    <string name="link_type">Typ odkazu</string>
+</resources>
