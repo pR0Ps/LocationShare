@@ -33,4 +33,5 @@ Contributors
 * [Pauline Dabrowski](https://www.linkedin.com/in/paulinedabrowski) - French translation
 * [Sabine Finke](https://www.facebook.com/konstglas.sabinefinke/) - Swedish translation
 * Stanimira Penkova - Bulgarian translation
+* [thenhustey](https://github.com/thenhustey) - Czech translation
 * Una Wang - Korean translation
