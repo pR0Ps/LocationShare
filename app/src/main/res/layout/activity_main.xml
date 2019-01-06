@@ -90,6 +90,16 @@
             android:onClick="viewLocation"
             android:text="@string/view_location" />
 
+        <!-- in geo picker mode there is a cancel button instead of share/copy/view where picking from gps can be canceled -->
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:visibility="gone"
+            android:onClick="onGeoPickCancel"
+            android:text="@android:string/cancel" />
+
     </LinearLayout>
 
 </RelativeLayout>

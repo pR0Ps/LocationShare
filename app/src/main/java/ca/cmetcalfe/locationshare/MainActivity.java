@@ -65,6 +65,9 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    /** when called via intent action.PICK the qui will close immediately on receiving location and return geo in activityresult */
+    private boolean inGeoPickerMode = false;
+
     // ----------------------------------------------------
     // Android Lifecycle
     // ----------------------------------------------------
@@ -73,7 +76,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setSupportActionBar((Toolbar)findViewById(R.id.toolbar));
-        setTitle(R.string.app_name);
+
+        Intent intent = getIntent();
+
+        String title = null;
+        if (intent != null) {
+            final String action = intent.getAction();
+            inGeoPickerMode = Intent.ACTION_PICK.equalsIgnoreCase(action) || Intent.ACTION_PICK_ACTIVITY.equalsIgnoreCase(action);
+            title = intent.getStringExtra(Intent.EXTRA_TITLE);
+        }
+
+        if (title != null) {
+            setTitle(title);
+        } else {
+            setTitle((inGeoPickerMode) ? R.string.app_name_pick : R.string.app_name);
+        }
 
         // Display area
         gpsButton = findViewById(R.id.gpsButton);
@@ -90,6 +107,13 @@ public class MainActivity extends AppCompatActivity {
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         locManager = (LocationManager)getSystemService(LOCATION_SERVICE);
+        if (inGeoPickerMode) {
+            // in geo picker mode manual processing of received geo is not necessary so hide them
+            shareButton.setVisibility(View.GONE);
+            copyButton.setVisibility(View.GONE);
+            viewButton.setVisibility(View.GONE);
+            findViewById(R.id.cancelButton).setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -141,10 +165,12 @@ public class MainActivity extends AppCompatActivity {
         progressBar.setVisibility(waitingForLocation ? View.VISIBLE : View.GONE);
         detailsText.setVisibility(haveLocation ? View.VISIBLE : View.GONE);
 
-        // Update buttons
-        shareButton.setEnabled(haveLocation);
-        copyButton.setEnabled(haveLocation);
-        viewButton.setEnabled(haveLocation);
+        if (!inGeoPickerMode) {
+            // Update buttons
+            shareButton.setEnabled(haveLocation);
+            copyButton.setEnabled(haveLocation);
+            viewButton.setEnabled(haveLocation);
+        }
 
         if (haveLocation) {
             String newline = System.getProperty("line.separator");
@@ -154,6 +180,10 @@ public class MainActivity extends AppCompatActivity {
                     getString(R.string.longitude), getLongitude(location)));
 
             lastLocation = location;
+
+            if (this.inGeoPickerMode) {
+                onGeoPicked();
+            }
         }
     }
 
@@ -328,5 +358,21 @@ public class MainActivity extends AppCompatActivity {
     private String formatLocation(Location location, String format) {
         return MessageFormat.format(format,
                 getLatitude(location), getLongitude(location));
+    }
+
+    // ----------------------------------------------------
+    // geo picker support
+    // ----------------------------------------------------
+    private void onGeoPicked() {
+        String uri = formatLocation(lastLocation, "geo:{0},{1}?q={0},{1}");
+
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    public void onGeoPickCancel(View view) {
+        setResult(RESULT_CANCELED);
+        finish();
     }
 }

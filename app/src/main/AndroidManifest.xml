@@ -19,6 +19,27 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <!-- pick geo from gps with all mimes (*/*) -->
+            <intent-filter android:label="@string/app_name_pick">
+                <action android:name="android.intent.action.PICK" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:mimeType="*/*" />
+                <data android:scheme="geo" />
+            </intent-filter>
+
+            <!-- pick geo from gps for "geo:"  without mime -->
+            <intent-filter android:label="@string/app_name_pick">
+                <action android:name="android.intent.action.PICK" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="geo" />
+            </intent-filter>
         </activity>
         <activity android:name=".SettingsActivity"
             android:label="@string/settings" >

@@ -1,1 +1,3 @@
+// startParameter.offline=true
+
 include ':app'
