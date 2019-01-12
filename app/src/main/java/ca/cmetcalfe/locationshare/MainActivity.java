@@ -5,6 +5,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -16,9 +17,6 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,6 +28,10 @@ import android.widget.Toast;
 
 import java.text.MessageFormat;
 import java.util.Locale;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog.Builder;
+import androidx.appcompat.app.AppCompatActivity;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -161,14 +163,14 @@ public class MainActivity extends AppCompatActivity {
     // ----------------------------------------------------
     // DialogInterface Listeners
     // ----------------------------------------------------
-    private class onClickShareListener implements DialogInterface.OnClickListener {
+    private class onClickShareListener implements OnClickListener {
         @Override
         public void onClick(DialogInterface dialog, int i) {
             shareLocationText(formatLocation(lastLocation, getResources().getStringArray(R.array.link_options)[i]));
         }
     }
 
-    private class onClickCopyListener implements DialogInterface.OnClickListener {
+    private class onClickCopyListener implements OnClickListener {
         @Override
         public void onClick(DialogInterface dialog, int i) {
             copyLocationText(formatLocation(lastLocation, getResources().getStringArray(R.array.link_options)[i]));
@@ -209,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
         String linkChoice = PreferenceManager.getDefaultSharedPreferences(this).getString("prefLinkType", "");
 
         if (linkChoice.equals(getResources().getString(R.string.always_ask))) {
-            new AlertDialog.Builder(this).setTitle(R.string.choose_link)
+            new Builder(this).setTitle(R.string.choose_link)
                     .setCancelable(true)
                     .setItems(R.array.link_names, new onClickShareListener())
                     .create()
@@ -227,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
         String linkChoice = PreferenceManager.getDefaultSharedPreferences(this).getString("prefLinkType", "");
 
         if (linkChoice.equals(getResources().getString(R.string.always_ask))) {
-            new AlertDialog.Builder(this).setTitle(R.string.choose_link)
+            new Builder(this).setTitle(R.string.choose_link)
                     .setCancelable(true)
                     .setItems(R.array.link_names, new onClickCopyListener())
                     .create()
