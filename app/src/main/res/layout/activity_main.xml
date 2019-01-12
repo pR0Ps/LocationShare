@@ -4,56 +4,55 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <android.support.v7.widget.Toolbar
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        android:popupTheme="@style/ThemeOverlay.AppCompat" />
+        android:popupTheme="@style/ThemeOverlay.AppCompat"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
     <LinearLayout
         android:id="@+id/statusLayout"
-        android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/activity_vertical_margin"
+        android:layout_below="@+id/toolbar"
+        android:orientation="vertical"
         android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:layout_below="@+id/toolbar" >
+        android:paddingBottom="@dimen/activity_vertical_margin">
 
         <TextView
             android:id="@+id/detailsText"
-            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="" />
+            android:text=""
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/progressTitle"
-            android:visibility="visible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/getting_location"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:visibility="visible" />
 
         <ProgressBar
-            style="?android:attr/progressBarStyleHorizontal"
             android:id="@+id/progressBar"
-            android:visibility="visible"
-            android:indeterminate="true"
+            style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="visible" />
 
         <Button
             android:id="@+id/gpsButton"
-            android:visibility="gone"
             android:layout_width="fill_parent"
             android:layout_height="54dp"
             android:onClick="openLocationSettings"
-            android:text="@string/turn_on_GPS" />
+            android:text="@string/turn_on_GPS"
+            android:visibility="gone" />
 
     </LinearLayout>
 
@@ -61,10 +60,10 @@
         android:id="@+id/shareLayout"
         android:layout_width="fill_parent"
         android:layout_height="54dp"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
         android:layout_below="@+id/statusLayout"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin">
 
         <Button
             android:id="@+id/shareButton"
