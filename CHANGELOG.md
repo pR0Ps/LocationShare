@@ -1,5 +1,8 @@
 # Location Share Changelog
 
+### [v1.3.2] - 2019-01-14
+- Target Android Pie (API 28)
+
 ### [v1.3.1] - 2018-09-14
 - Added 2 missing translated strings
 
@@ -19,6 +22,7 @@
 ### [v1.0] - 2016-11-03
 - Initial version
 
+ [v1.3.2]: https://github.com/pR0Ps/LocationShare/compare/v1.3.1...v1.3.2
  [v1.3.1]: https://github.com/pR0Ps/LocationShare/compare/v1.3...v1.3.1
  [v1.3]: https://github.com/pR0Ps/LocationShare/compare/v1.2...v1.3
  [v1.2]: https://github.com/pR0Ps/LocationShare/compare/v1.1...v1.2
