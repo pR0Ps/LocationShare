@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     defaultConfig {
         applicationId "ca.cmetcalfe.locationshare"
         minSdkVersion 14
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 5
         versionName "1.3.1"
     }
@@ -15,8 +15,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        encoding = 'UTF-8'
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
-    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'androidx.annotation:annotation:1.0.1'
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
 }
