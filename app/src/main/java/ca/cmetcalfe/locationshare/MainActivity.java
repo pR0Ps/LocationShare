@@ -303,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT < 17) {
             return System.currentTimeMillis() - location.getTime() < 30e3;
         } else {
-            return SystemClock.elapsedRealtime() - location.getElapsedRealtimeNanos() < 30e9;
+            return SystemClock.elapsedRealtimeNanos() - location.getElapsedRealtimeNanos() < 30e9;
         }
     }
 
