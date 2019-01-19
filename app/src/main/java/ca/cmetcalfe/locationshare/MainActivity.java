@@ -151,10 +151,10 @@ public class MainActivity extends AppCompatActivity {
 
         if (haveLocation) {
             String newline = System.getProperty("line.separator");
-            detailsText.setText(String.format("%s: %s%s%s: %s%s%s: %s",
+            detailsText.setText(String.format("%s: %s%s%s: %s (%s)%s%s: %s (%s)",
                     getString(R.string.accuracy), getAccuracy(location), newline,
-                    getString(R.string.latitude), getLatitude(location), newline,
-                    getString(R.string.longitude), getLongitude(location)));
+                    getString(R.string.latitude), getLatitude(location), getDMSLatitude(location), newline,
+                    getString(R.string.longitude), getLongitude(location), getDMSLongitude(location)));
 
             lastLocation = location;
         }
@@ -320,6 +320,26 @@ public class MainActivity extends AppCompatActivity {
 
     private String getLatitude(Location location) {
         return String.format(Locale.US, "%2.5f", location.getLatitude());
+    }
+
+    private String getDMSLatitude(Location location) {
+        double val = location.getLatitude();
+        return String.format(Locale.US, "%.0f° %2.0f′ %2.3f″ %s",
+                Math.floor(Math.abs(val)),
+                Math.floor(Math.abs(val * 60) % 60),
+                (Math.abs(val) * 3600) % 60,
+                val > 0 ? "N" : "S"
+        );
+    }
+
+    private String getDMSLongitude(Location location) {
+        double val = location.getLongitude();
+        return String.format(Locale.US, "%.0f° %2.0f′ %2.3f″ %s",
+                Math.floor(Math.abs(val)),
+                Math.floor(Math.abs(val * 60) % 60),
+                (Math.abs(val) * 3600) % 60,
+                val > 0 ? "E" : "W"
+        );
     }
 
     private String getLongitude(Location location) {
