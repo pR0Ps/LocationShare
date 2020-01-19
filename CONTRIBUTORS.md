@@ -10,3 +10,4 @@ Contributors
 * Stanimira Penkova - Bulgarian translation
 * [thenhustey](https://github.com/thenhustey) - Czech translation
 * Una Wang - Korean translation
+* [zmni](https://github.com/zmni) - Indonesian translation

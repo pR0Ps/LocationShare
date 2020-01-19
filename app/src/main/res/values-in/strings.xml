@@ -1,0 +1,24 @@
+<resources>
+    <string name="share_location">Bagikan</string>
+    <string name="copy_location">Salin</string>
+    <string name="view_location">Buka</string>
+    <string name="copied">Disalin ke papan klip</string>
+    <string name="clipboard_error">Gagal menyalin teks ke papan klip</string>
+    <string name="getting_location">Memuat lokasi…</string>
+    <string name="share_location_via">Bagikan lokasi via</string>
+    <string name="view_location_via">Buka lokasi via</string>
+
+    <string name="turn_on_GPS">Aktifkan GPS</string>
+    <string name="permission_denied">Izin GPS ditolak</string>
+
+    <string name="accuracy">Akurasi</string>
+    <string name="latitude">Garis lintang</string>
+    <string name="longitude">Garis bujur</string>
+
+    <string name="choose_link">Pilih tipe tautan</string>
+
+    <string name="always_ask">Selalu bertanya</string>
+
+    <string name="settings">Pengaturan</string>
+    <string name="link_type">Tipe tautan</string>
+</resources>
