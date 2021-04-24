@@ -114,8 +114,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[],
+                                           @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PERMISSION_REQUEST &&
                 grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             startRequestingLocation();
@@ -189,15 +190,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                Intent intentSettingsActivity = new Intent(this, SettingsActivity.class);
-                this.startActivity(intentSettingsActivity);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-
+        if (item.getItemId() == R.id.action_settings) {
+            Intent intentSettingsActivity = new Intent(this, SettingsActivity.class);
+            this.startActivity(intentSettingsActivity);
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     // ----------------------------------------------------
@@ -294,6 +292,7 @@ public class MainActivity extends AppCompatActivity {
         locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListener);
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean validLocation(Location location) {
         if (location == null) {
             return false;

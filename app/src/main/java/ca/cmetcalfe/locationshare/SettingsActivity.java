@@ -13,7 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 
 public class SettingsActivity extends PreferenceActivity {
 
-    private static OnPreferenceChangeListener prefsListener = (pref, value) -> {
+    private static final OnPreferenceChangeListener prefsListener = (pref, value) -> {
         String valueString = value.toString();
 
         if (pref instanceof ListPreference) {
