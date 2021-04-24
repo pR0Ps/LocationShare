@@ -17,6 +17,7 @@
 
     <string name="choose_link">Välja ut länktyp</string>
 
+    <!--<string name="decimal"></string>-->
     <string name="always_ask">Fråga mig varje gång</string>
 
     <string name="settings">Inställningar</string>

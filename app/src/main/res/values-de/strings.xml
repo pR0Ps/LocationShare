@@ -17,6 +17,7 @@
 
     <string name="choose_link">Linktyp auswählen</string>
 
+    <!--<string name="decimal"></string>-->
     <string name="always_ask">Jedesmal nachfragen</string>
 
     <string name="settings">Einstellungen</string>

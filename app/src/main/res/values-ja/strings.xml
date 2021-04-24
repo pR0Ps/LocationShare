@@ -17,6 +17,7 @@
 
     <string name="choose_link">リンクタイプの選択</string>
 
+    <!--<string name="decimal"></string>-->
     <string name="always_ask">毎回尋ねる</string>
 
     <string name="settings">設定</string>

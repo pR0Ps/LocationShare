@@ -17,6 +17,7 @@
 
     <string name="choose_link">Pilih tipe tautan</string>
 
+    <!--<string name="decimal"></string>-->
     <string name="always_ask">Selalu bertanya</string>
 
     <string name="settings">Pengaturan</string>

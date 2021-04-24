@@ -17,6 +17,7 @@
 
     <string name="choose_link">Zvolte typ odkazu</string>
 
+    <!--<string name="decimal"></string>-->
     <string name="always_ask">Vždy se dotázat</string>
 
     <string name="settings">Nastavení</string>

@@ -23,6 +23,7 @@
     <string name="googlemaps" translatable="false">Google Maps</string>
     <string name="openstreetmap" translatable="false">OpenStreetMap</string>
     <string name="geouri" translatable="false">GeoURI</string>
+    <string name="decimal">Decimal</string>
 
     <string name="settings">Settings</string>
     <string name="link_type">Link type</string>
