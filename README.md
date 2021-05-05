@@ -14,9 +14,9 @@ A simple Android application that shares your current location.
        height="80">
 </a>
 
-Location Share doesn't require internet access, doesn't require setting up an account, doesn't track
-your location in the background, doesn't auto-share it, and doesn't send it to anyone except those
-you explicitly tell it to.
+Location Share doesn't collect any data from you, doesn't require internet access, doesn't require
+setting up an account, doesn't track your location in the background, doesn't auto-share it, and
+doesn't send it to anyone except those you explicitly tell it to.
 
 It can share your location using any application that supports sharing plain text. This includes
 (but isn't limited to) sharing via SMS, email, social networks, note taking applications, etc.
