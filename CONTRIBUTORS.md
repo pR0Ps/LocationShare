@@ -1,6 +1,7 @@
 Contributors
 ============
 
+* [ashed](https://github.com/ashed) - Russian translation
 * [FTno](https://github.com/FTno) - Norwegian translation
 * [Heimen Stoffels](https://github.com/Vistaus) - Dutch translation
 * Karen Mondrup - Danish translation

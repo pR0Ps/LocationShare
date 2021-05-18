@@ -1,0 +1,25 @@
+<resources>
+    <string name="share_location">Поделиться</string>
+    <string name="copy_location">Копировать</string>
+    <string name="view_location">Просмотреть</string>
+    <string name="copied">Скопировано в буфер обмена</string>
+    <string name="clipboard_error">Сбой копирования текста в буфер обмена</string>
+    <string name="getting_location">Получение местоположения…</string>
+    <string name="share_location_via">Поделиться местоположением через</string>
+    <string name="view_location_via">Просмотреть местоположение через</string>
+
+    <string name="turn_on_GPS">Включить GPS</string>
+    <string name="permission_denied">GPS разрешение запрещено</string>
+
+    <string name="accuracy">Точность</string>
+    <string name="latitude">Широта</string>
+    <string name="longitude">Долгота</string>
+
+    <string name="choose_link">Выберите тип ссылки</string>
+
+    <string name="decimal">Десятичное</string>
+    <string name="always_ask">Спрашивать каждый раз</string>
+
+    <string name="settings">Настройки</string>
+    <string name="link_type">Тип ссылки</string>
+</resources>
