@@ -1,5 +1,8 @@
 # Location Share Changelog
 
+### [v1.4.1] - 2021-05-18
+- Adds Russian translation - thanks [@ashed](https://github.com/ashed)
+
 ### [v1.4.0] - 2021-04-24
 - Adds a DMS representation of coordinates
 - Adds the ability to share coordinates in a raw decimal form "{lat}, {lon}"
@@ -30,6 +33,7 @@
 ### [v1.0] - 2016-11-03
 - Initial version
 
+ [v1.4.1]: https://github.com/pR0Ps/LocationShare/compare/v1.4.0...v1.4.1
  [v1.4.0]: https://github.com/pR0Ps/LocationShare/compare/v1.3.2...v1.4.0
  [v1.3.2]: https://github.com/pR0Ps/LocationShare/compare/v1.3.1...v1.3.2
  [v1.3.1]: https://github.com/pR0Ps/LocationShare/compare/v1.3...v1.3.1
