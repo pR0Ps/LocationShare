@@ -1,0 +1,25 @@
+<resources>
+    <string name="share_location">Compartilhar</string>
+    <string name="copy_location">Copiar</string>
+    <string name="view_location">Ver</string>
+    <string name="copied">Copiado ao Clipboard</string>
+    <string name="clipboard_error">Falha ao copiar texto para o Clipboard</string>
+    <string name="getting_location">Obtendo localização…</string>
+    <string name="share_location_via">Compartilhar a localização via</string>
+    <string name="view_location_via">Ver a localização via</string>
+
+    <string name="turn_on_GPS">Ligar o GPS</string>
+    <string name="permission_denied">A permissão do GPS recusada</string>
+
+    <string name="accuracy">Precisão</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+
+    <string name="choose_link">Escolha o tipo de link</string>
+
+    <string name="always_ask">Pergunte todas as vezes</string>
+    <string name="decimal">Decimal</string>
+
+    <string name="settings">Configurações</string>
+    <string name="link_type">Tipo de link</string>
+</resources>
