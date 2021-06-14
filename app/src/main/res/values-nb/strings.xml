@@ -17,8 +17,8 @@
 
     <string name="choose_link">Velg en lenketype</string>
 
-    <!--<string name="decimal"></string>-->
-    <string name="always_ask">Spør meg hver gang</string><!-- Note: Google Translate -->
+    <string name="decimal">Desimal</string>
+    <string name="always_ask">Spør meg hver gang</string>
 
     <string name="settings">Innstillinger</string>
     <string name="link_type">Lenketype</string>
