@@ -53,9 +53,6 @@ public class MainActivity extends AppCompatActivity {
         public void onProviderDisabled(String provider) {
             updateLocation();
         }
-
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-        }
     };
 
     // ----------------------------------------------------
