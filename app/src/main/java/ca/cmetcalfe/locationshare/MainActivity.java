@@ -25,16 +25,17 @@ import android.widget.Toast;
 import java.text.MessageFormat;
 import java.util.Locale;
 
-import androidx.annotation.NonNull;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts.RequestPermission;
 import androidx.appcompat.app.AlertDialog.Builder;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.preference.PreferenceManager;
 
 import ca.cmetcalfe.locationshare.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final static int PERMISSION_REQUEST = 1;
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private LocationManager locManager;
@@ -97,19 +98,15 @@ public class MainActivity extends AppCompatActivity {
         updateLocation();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == PERMISSION_REQUEST &&
-                grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            startRequestingLocation();
-        } else {
-            Toast.makeText(getApplicationContext(), R.string.permission_denied, Toast.LENGTH_SHORT).show();
-            finish();
-        }
-    }
+    private final ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    startRequestingLocation();
+                } else {
+                    Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            });
 
     // ----------------------------------------------------
     // UI
@@ -267,9 +264,10 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST);
+        final String permission = Manifest.permission.ACCESS_FINE_LOCATION;
+        if (ActivityCompat.checkSelfPermission(this, permission)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissionLauncher.launch(permission);
             return;
         }
 
