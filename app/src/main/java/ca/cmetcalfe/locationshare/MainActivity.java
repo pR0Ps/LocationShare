@@ -20,9 +20,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.MessageFormat;
@@ -33,22 +30,16 @@ import androidx.appcompat.app.AlertDialog.Builder;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 
+import ca.cmetcalfe.locationshare.databinding.ActivityMainBinding;
+
 public class MainActivity extends AppCompatActivity {
 
     private final static int PERMISSION_REQUEST = 1;
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private Button gpsButton;
-    private TextView progressTitle;
-    private ProgressBar progressBar;
-    private TextView detailsText;
-
-    private Button shareButton;
-    private Button copyButton;
-    private Button viewButton;
-
     private LocationManager locManager;
     private Location lastLocation;
+    private ActivityMainBinding binding;
 
     private final LocationListener locListener = new LocationListener() {
         public void onLocationChanged(Location loc) {
@@ -73,20 +64,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        setSupportActionBar(findViewById(R.id.toolbar));
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        setSupportActionBar(binding.toolbar.toolbar);
         setTitle(R.string.app_name);
 
         // Display area
-        gpsButton = findViewById(R.id.gpsButton);
-        progressTitle = findViewById(R.id.progressTitle);
-        progressBar = findViewById(R.id.progressBar);
-        detailsText = findViewById(R.id.detailsText);
+        binding.gpsButton.setOnClickListener(this::openLocationSettings);
 
         // Button area
-        shareButton = findViewById(R.id.shareButton);
-        copyButton = findViewById(R.id.copyButton);
-        viewButton = findViewById(R.id.viewButton);
+        binding.shareButton.setOnClickListener(this::shareLocation);
+        binding.copyButton.setOnClickListener(this::copyLocation);
+        binding.viewButton.setOnClickListener(this::viewLocation);
 
         // Set default values for preferences
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
@@ -139,19 +128,19 @@ public class MainActivity extends AppCompatActivity {
         boolean haveLocation = locationEnabled && !waitingForLocation;
 
         // Update display area
-        gpsButton.setVisibility(locationEnabled ? View.GONE : View.VISIBLE);
-        progressTitle.setVisibility(waitingForLocation ? View.VISIBLE : View.GONE);
-        progressBar.setVisibility(waitingForLocation ? View.VISIBLE : View.GONE);
-        detailsText.setVisibility(haveLocation ? View.VISIBLE : View.GONE);
+        binding.gpsButton.setVisibility(locationEnabled ? View.GONE : View.VISIBLE);
+        binding.progressTitle.setVisibility(waitingForLocation ? View.VISIBLE : View.GONE);
+        binding.progressBar.setVisibility(waitingForLocation ? View.VISIBLE : View.GONE);
+        binding.detailsText.setVisibility(haveLocation ? View.VISIBLE : View.GONE);
 
         // Update buttons
-        shareButton.setEnabled(haveLocation);
-        copyButton.setEnabled(haveLocation);
-        viewButton.setEnabled(haveLocation);
+        binding.shareButton.setEnabled(haveLocation);
+        binding.copyButton.setEnabled(haveLocation);
+        binding.viewButton.setEnabled(haveLocation);
 
         if (haveLocation) {
             String newline = System.getProperty("line.separator");
-            detailsText.setText(String.format("%s: %s%s%s: %s (%s)%s%s: %s (%s)",
+            binding.detailsText.setText(String.format("%s: %s%s%s: %s (%s)%s%s: %s (%s)",
                     getString(R.string.accuracy), getAccuracy(location), newline,
                     getString(R.string.latitude), getLatitude(location), getDMSLatitude(location), newline,
                     getString(R.string.longitude), getLongitude(location), getDMSLongitude(location)));

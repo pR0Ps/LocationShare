@@ -46,14 +46,12 @@
             android:id="@+id/gpsButton"
             android:layout_width="match_parent"
             android:layout_height="54dp"
-            android:onClick="openLocationSettings"
             android:text="@string/turn_on_GPS"
             android:visibility="gone" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/shareLayout"
         android:layout_width="match_parent"
         android:layout_height="54dp"
         android:layout_below="@+id/statusLayout"
@@ -66,7 +64,6 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:onClick="shareLocation"
             android:text="@string/share_location" />
 
         <Button
@@ -74,7 +71,6 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:onClick="copyLocation"
             android:text="@string/copy_location" />
 
         <Button
@@ -82,7 +78,6 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:onClick="viewLocation"
             android:text="@string/view_location" />
 
     </LinearLayout>
