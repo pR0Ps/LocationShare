@@ -4,8 +4,9 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.preference.PreferenceFragmentCompat;
+
+import ca.cmetcalfe.locationshare.databinding.ActivitySettingsBinding;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -13,14 +14,15 @@ public class SettingsActivity extends AppCompatActivity {
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_settings);
+        final ActivitySettingsBinding binding =
+                ActivitySettingsBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        final Toolbar toolbar = findViewById(R.id.settings_toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(binding.settingsToolbar.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.settings_container, new SettingsFragment())
+                .replace(binding.settingsContainer.getId(), new SettingsFragment())
                 .commit();
     }
 
