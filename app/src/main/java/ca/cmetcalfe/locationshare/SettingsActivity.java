@@ -1,62 +1,43 @@
 package ca.cmetcalfe.locationshare;
 
 import android.os.Bundle;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
-import android.view.LayoutInflater;
-import android.widget.LinearLayout;
+import android.view.MenuItem;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.preference.PreferenceFragmentCompat;
 
-public class SettingsActivity extends PreferenceActivity {
+public class SettingsActivity extends AppCompatActivity {
 
-    private static final OnPreferenceChangeListener prefsListener = (pref, value) -> {
-        String valueString = value.toString();
-
-        if (pref instanceof ListPreference) {
-            ListPreference listPreference = (ListPreference) pref;
-            int index = listPreference.findIndexOfValue(valueString);
-
-            pref.setSummary(index >= 0 ? listPreference.getEntries()[index] : null);
-        }
-        return true;
-    };
-
-    // ----------------------------------------------------
-    // Android Lifecycle
-    // ----------------------------------------------------
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setToolbar();
+        setContentView(R.layout.activity_settings);
 
-        addPreferencesFromResource(R.xml.preferences);
-        bindPreferenceSummaryToValue(findPreference("prefLinkType"));
+        final Toolbar toolbar = findViewById(R.id.settings_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.settings_container, new SettingsFragment())
+                .commit();
     }
 
-    //-----------------------------------------------------
-    // Preferences related methods
-    //-----------------------------------------------------
-    private static void bindPreferenceSummaryToValue(Preference pref) {
-        pref.setOnPreferenceChangeListener(prefsListener);
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
 
-        prefsListener.onPreferenceChange(pref, PreferenceManager
-                .getDefaultSharedPreferences(pref.getContext())
-                .getString(pref.getKey(), ""));
+        return super.onOptionsItemSelected(item);
     }
 
-    // ----------------------------------------------------
-    // Helper functions
-    // ----------------------------------------------------
-    private void setToolbar() {
-        LinearLayout root = (LinearLayout) findViewById(android.R.id.list).getParent().getParent().getParent();
-        Toolbar toolbar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.toolbar, root, false);
-        root.addView(toolbar, 0);
-        toolbar.setTitle(R.string.settings);
-        toolbar.setNavigationOnClickListener(v -> finish());
+    public static class SettingsFragment extends PreferenceFragmentCompat {
+        @Override
+        public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
+            addPreferencesFromResource(R.xml.preferences);
+        }
     }
 }
