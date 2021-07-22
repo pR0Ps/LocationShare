@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private LocationManager locManager;
     private Location lastLocation;
     private ActivityMainBinding binding;
+    private SharedPreferences sharedPrefs;
 
     private final LocationListener locListener = new LocationListener() {
         public void onLocationChanged(Location loc) {
@@ -66,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar.toolbar);
         setTitle(R.string.app_name);
+
+        sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Display area
         binding.gpsButton.setOnClickListener(this::openLocationSettings);
@@ -188,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        String linkChoice = PreferenceManager.getDefaultSharedPreferences(this).getString("prefLinkType", "");
+        String linkChoice = sharedPrefs.getString("prefLinkType", "");
 
         if (linkChoice.equals(getResources().getString(R.string.always_ask))) {
             new Builder(this).setTitle(R.string.choose_link)
@@ -206,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        String linkChoice = PreferenceManager.getDefaultSharedPreferences(this).getString("prefLinkType", "");
+        String linkChoice = sharedPrefs.getString("prefLinkType", "");
 
         if (linkChoice.equals(getResources().getString(R.string.always_ask))) {
             new Builder(this).setTitle(R.string.choose_link)
