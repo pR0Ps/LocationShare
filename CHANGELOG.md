@@ -1,5 +1,11 @@
 # Location Share Changelog
 
+### [v1.4.2] - 2022-03-25
+- Updates Norwegian translations - thanks [FTno](https://github.com/FTno)
+- Add Brazilian Portuguese translation
+- App maintenance, library updates, and optimizations - thanks [@TacoTheDank](https://github.com/TacoTheDank)
+- Target Android S (API 31)
+
 ### [v1.4.1] - 2021-05-18
 - Adds Russian translation - thanks [@ashed](https://github.com/ashed)
 
@@ -33,6 +39,7 @@
 ### [v1.0] - 2016-11-03
 - Initial version
 
+ [v1.4.2]: https://github.com/pR0Ps/LocationShare/compare/v1.4.1...v1.4.2
  [v1.4.1]: https://github.com/pR0Ps/LocationShare/compare/v1.4.0...v1.4.1
  [v1.4.0]: https://github.com/pR0Ps/LocationShare/compare/v1.3.2...v1.4.0
  [v1.3.2]: https://github.com/pR0Ps/LocationShare/compare/v1.3.1...v1.3.2
