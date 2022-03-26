@@ -24,6 +24,12 @@ android {
     buildFeatures {
         viewBinding true
     }
+    lint {
+        warning 'MissingTranslation'
+        ignore 'OldTargetApi', 'ButtonStyle'
+        textReport true
+        abortOnError true
+    }
 }
 
 dependencies {
