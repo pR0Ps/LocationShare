@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ListPreference
         android:defaultValue="@string/always_ask"
@@ -7,5 +8,7 @@
         android:entries="@array/settings_options"
         android:entryValues="@array/link_options"
         android:key="prefLinkType"
-        android:title="@string/link_type" />
+        android:title="@string/link_type"
+        app:iconSpaceReserved="false"
+        app:useSimpleSummaryProvider="true" />
 </PreferenceScreen>

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -15,41 +16,33 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.MessageFormat;
 import java.util.Locale;
 
-import androidx.annotation.NonNull;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts.RequestPermission;
 import androidx.appcompat.app.AlertDialog.Builder;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.preference.PreferenceManager;
 
+import ca.cmetcalfe.locationshare.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final static int PERMISSION_REQUEST = 1;
     private static final String TAG = MainActivity.class.getSimpleName();
-
-    private Button gpsButton;
-    private TextView progressTitle;
-    private ProgressBar progressBar;
-    private TextView detailsText;
-
-    private Button shareButton;
-    private Button copyButton;
-    private Button viewButton;
 
     private LocationManager locManager;
     private Location lastLocation;
+    private ActivityMainBinding binding;
+    private SharedPreferences sharedPrefs;
 
     private final LocationListener locListener = new LocationListener() {
         public void onLocationChanged(Location loc) {
@@ -63,9 +56,6 @@ public class MainActivity extends AppCompatActivity {
         public void onProviderDisabled(String provider) {
             updateLocation();
         }
-
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-        }
     };
 
     // ----------------------------------------------------
@@ -74,20 +64,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        setSupportActionBar(findViewById(R.id.toolbar));
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        setSupportActionBar(binding.toolbar.toolbar);
         setTitle(R.string.app_name);
 
+        sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+
         // Display area
-        gpsButton = findViewById(R.id.gpsButton);
-        progressTitle = findViewById(R.id.progressTitle);
-        progressBar = findViewById(R.id.progressBar);
-        detailsText = findViewById(R.id.detailsText);
+        binding.gpsButton.setOnClickListener(this::openLocationSettings);
 
         // Button area
-        shareButton = findViewById(R.id.shareButton);
-        copyButton = findViewById(R.id.copyButton);
-        viewButton = findViewById(R.id.viewButton);
+        binding.shareButton.setOnClickListener(this::shareLocation);
+        binding.copyButton.setOnClickListener(this::copyLocation);
+        binding.viewButton.setOnClickListener(this::viewLocation);
 
         // Set default values for preferences
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
@@ -112,19 +102,15 @@ public class MainActivity extends AppCompatActivity {
         updateLocation();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == PERMISSION_REQUEST &&
-                grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            startRequestingLocation();
-        } else {
-            Toast.makeText(getApplicationContext(), R.string.permission_denied, Toast.LENGTH_SHORT).show();
-            finish();
-        }
-    }
+    private final ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    startRequestingLocation();
+                } else {
+                    Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            });
 
     // ----------------------------------------------------
     // UI
@@ -140,19 +126,19 @@ public class MainActivity extends AppCompatActivity {
         boolean haveLocation = locationEnabled && !waitingForLocation;
 
         // Update display area
-        gpsButton.setVisibility(locationEnabled ? View.GONE : View.VISIBLE);
-        progressTitle.setVisibility(waitingForLocation ? View.VISIBLE : View.GONE);
-        progressBar.setVisibility(waitingForLocation ? View.VISIBLE : View.GONE);
-        detailsText.setVisibility(haveLocation ? View.VISIBLE : View.GONE);
+        binding.gpsButton.setVisibility(locationEnabled ? View.GONE : View.VISIBLE);
+        binding.progressTitle.setVisibility(waitingForLocation ? View.VISIBLE : View.GONE);
+        binding.progressBar.setVisibility(waitingForLocation ? View.VISIBLE : View.GONE);
+        binding.detailsText.setVisibility(haveLocation ? View.VISIBLE : View.GONE);
 
         // Update buttons
-        shareButton.setEnabled(haveLocation);
-        copyButton.setEnabled(haveLocation);
-        viewButton.setEnabled(haveLocation);
+        binding.shareButton.setEnabled(haveLocation);
+        binding.copyButton.setEnabled(haveLocation);
+        binding.viewButton.setEnabled(haveLocation);
 
         if (haveLocation) {
             String newline = System.getProperty("line.separator");
-            detailsText.setText(String.format("%s: %s%s%s: %s (%s)%s%s: %s (%s)",
+            binding.detailsText.setText(String.format("%s: %s%s%s: %s (%s)%s%s: %s (%s)",
                     getString(R.string.accuracy), getAccuracy(location), newline,
                     getString(R.string.latitude), getLatitude(location), getDMSLatitude(location), newline,
                     getString(R.string.longitude), getLongitude(location), getDMSLongitude(location)));
@@ -206,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        String linkChoice = PreferenceManager.getDefaultSharedPreferences(this).getString("prefLinkType", "");
+        String linkChoice = sharedPrefs.getString("prefLinkType", "");
 
         if (linkChoice.equals(getResources().getString(R.string.always_ask))) {
             new Builder(this).setTitle(R.string.choose_link)
@@ -224,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        String linkChoice = PreferenceManager.getDefaultSharedPreferences(this).getString("prefLinkType", "");
+        String linkChoice = sharedPrefs.getString("prefLinkType", "");
 
         if (linkChoice.equals(getResources().getString(R.string.always_ask))) {
             new Builder(this).setTitle(R.string.choose_link)
@@ -282,9 +268,10 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST);
+        final String permission = Manifest.permission.ACCESS_FINE_LOCATION;
+        if (ActivityCompat.checkSelfPermission(this, permission)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissionLauncher.launch(permission);
             return;
         }
 
