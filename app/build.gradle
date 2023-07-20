@@ -1,11 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 31
+    namespace 'ca.cmetcalfe.locationshare'
+    compileSdkVersion 33
     defaultConfig {
         applicationId "ca.cmetcalfe.locationshare"
         minSdkVersion 14
-        targetSdkVersion 31
+        targetSdkVersion 33
         versionCode 9
         versionName "1.4.2"
     }
@@ -26,6 +27,6 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.preference:preference:1.2.0'
 }
